@@ -1,38 +1,83 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> //strcpy, strcmp,
-#include <conio.h>  //getch
+#include <string.h> 
+#include <conio.h>  
 
 // Teclas del código ASCII
 #define ENTER 13
 #define BORRAR 8
 
+struct teclado
+{
+    char identificador[5 + 1];
+    char marca[10 + 1];
+    char modelo[15 + 1];
+    char idioma[10 + 1];
+};
+struct mouse
+{
+    char identificador[5 + 1];
+    char marca[10 + 1];
+    char modelo[15 + 1];
+};
+struct monitor
+{
+    char identificador[5 + 1];
+    char marca[10 + 1];
+    char modelo[15 + 1];
+    float tamano;
+};
+struct notebook
+{
+    char identificador[5 + 1];
+    char marca[10 + 1];
+    char modelo[15 + 1];
+    int ram;
+    char procesador[5 + 1];
+    float pantalla;
+};
+struct PC
+{
+    char identificador[5 + 1];
+    char marca[10 + 1];
+    char modelo[15 + 1];
+    int ram;
+    char procesador[5 + 1];
+    struct teclado tecladoPC;
+    struct mouse mousePC;
+    struct monitor monitorPC;
+};
+
 typedef struct
 {
-    char username[10];
-    char password[10];
+    char identificador[5 + 1];
+    char username[5 + 1];
+    char password[4 + 1];
+    char nombres[15 + 1];
+    char apellidoP[7 + 1];
+    char apellidoM[5 + 1];
 } LOGIN;
 
-// Asignacion de usuarios
+// Asignacion de usuario
 LOGIN asignacionCuenta();
 
 // Funciones principales
-int loginUsuario(int intentos, LOGIN cuenta);
-
+int loginUsuario(int intentos, LOGIN cuentaSistema);
+void imprimirUsuario(LOGIN cuenta);
 
 int main()
 {
     system("cls");
     int ingreso, intentos = 3;
-    LOGIN cuenta;
+    LOGIN cuentaSistema = asignacionCuenta();
 
-    cuenta = asignacionCuenta();
-    ingreso = loginUsuario(intentos, cuenta);
+    ingreso = loginUsuario(intentos, cuentaSistema);
 
     if (ingreso == 0)
     {
         system("cls");
-        printf("Bienvenido!");
+        printf("Bienvenido ");
+        imprimirUsuario(cuentaSistema);
     }
     else
     {
@@ -41,33 +86,35 @@ int main()
     }
     return 0;
 }
-
-LOGIN asignacionCuenta() // Asignacion de la cuenta
+LOGIN asignacionCuenta()
 {
-    LOGIN account;
-    strcpy(account.username, "admin");
-    strcpy(account.password, "1234");
-    return account;
+    LOGIN cuentaSistema;
+    strcpy(cuentaSistema.identificador, "U-001");
+    strcpy(cuentaSistema.username, "admin");
+    strcpy(cuentaSistema.password, "1234");
+    strcpy(cuentaSistema.nombres, "Cristobal Ariel");
+    strcpy(cuentaSistema.apellidoP, "Alarcon");
+    strcpy(cuentaSistema.apellidoM, "Perez");
+    return cuentaSistema;
 }
-int loginUsuario(int intentos, LOGIN cuenta)
+int loginUsuario(int intentos, LOGIN cuentaSistema)
 {
-    int contador, ingreso;
-    char usuario[10 + 1]; // + 1 por el '\0'
-    char password[10 + 1];
+    int contador = 0;
+    char usernameIngresado[10 + 1];
+    char passwordIngresada[10 + 1];
     char letra;
 
     printf("----- Login -----\n");
     printf("Usuario: ");
-    gets(usuario);
+    gets(usernameIngresado);
     printf("Contrasena: ");
 
-    contador = 0;
     while (1)
     {
         letra = getch();
         if (letra == ENTER)
         {
-            password[contador] = '\0';
+            passwordIngresada[contador] = '\0';
             break;
         }
         else if (letra == BORRAR)
@@ -83,16 +130,14 @@ int loginUsuario(int intentos, LOGIN cuenta)
             if (contador <= 10)
             {
                 printf("*");
-                password[contador] = letra;
+                passwordIngresada[contador] = letra;
                 contador++;
             }
         }
     }
     printf("\n");
-    if (strcmp(usuario, cuenta.username) == 0 && strcmp(password, cuenta.password) == 0)
-    {
+    if (strcmp(usernameIngresado, cuentaSistema.username) == 0 && strcmp(passwordIngresada, cuentaSistema.password) == 0)
         return 0;
-    }
     else
     {
         intentos--;
@@ -103,7 +148,11 @@ int loginUsuario(int intentos, LOGIN cuenta)
             system("cls");
             printf("Nombre de usuario y/o contrasena incorrecta.\n");
             printf("Intentos restantes: %d\n", intentos);
-            return loginUsuario(intentos, cuenta);
+            return loginUsuario(intentos, cuentaSistema);
         }
     }
+}
+void imprimirUsuario(LOGIN cuentaSistema)
+{
+    printf("%s %s %s\n----------------------------------------", cuentaSistema.nombres, cuentaSistema.apellidoP, cuentaSistema.apellidoM);
 }
