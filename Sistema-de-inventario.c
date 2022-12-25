@@ -1,79 +1,109 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h> //strcpy, strcmp,
 #include <conio.h>  //getch
 
-#define USUARIOS 5
-#define LONGITUD 10
 // Teclas del código ASCII
 #define ENTER 13
 #define BORRAR 8
 
-typedef struct cuentaDelSistema
+typedef struct
 {
-    char username[LONGITUD];
-    char password[LONGITUD];
+    char username[10];
+    char password[10];
 } LOGIN;
+
+// Asignacion de usuarios
+LOGIN asignacionCuenta();
+
+// Funciones principales
+int loginUsuario(int intentos, LOGIN cuenta);
+
 
 int main()
 {
     system("cls");
-    char username[USUARIOS][LONGITUD + 1];
-    char password[USUARIOS][LONGITUD + 1];
-    char letra, userIngresado[LONGITUD + 1], passIngresada[LONGITUD + 1];
-    int contador, j, intentos = 0;
+    int ingreso, intentos = 3;
+    LOGIN cuenta;
 
-    LOGIN account[USUARIOS];
-    // Cuenta declarada por defecto.
-    strcpy(account[0].username, "admin");
-    strcpy(account[0].password, "admin");
+    cuenta = asignacionCuenta();
+    ingreso = loginUsuario(intentos, cuenta);
 
-    while (intentos < 3)
+    if (ingreso == 0)
     {
-        contador = 0;
-        printf("Nombre de usuario: ");
-        gets(userIngresado);
-        printf("Contrasena: ");
-        while (1)
+        system("cls");
+        printf("Bienvenido!");
+    }
+    else
+    {
+        system("cls");
+        printf("Has llegado al limite de intentos.\nEl programa finalizara.\n");
+    }
+    return 0;
+}
+
+LOGIN asignacionCuenta() // Asignacion de la cuenta
+{
+    LOGIN account;
+    strcpy(account.username, "admin");
+    strcpy(account.password, "1234");
+    return account;
+}
+int loginUsuario(int intentos, LOGIN cuenta)
+{
+    int contador, ingreso;
+    char usuario[10 + 1]; // + 1 por el '\0'
+    char password[10 + 1];
+    char letra;
+
+    printf("----- Login -----\n");
+    printf("Usuario: ");
+    gets(usuario);
+    printf("Contrasena: ");
+
+    contador = 0;
+    while (1)
+    {
+        letra = getch();
+        if (letra == ENTER)
         {
-            letra = getch();
-            if (letra == ENTER)
+            password[contador] = '\0';
+            break;
+        }
+        else if (letra == BORRAR)
+        {
+            if (contador > 0)
             {
-                passIngresada[contador] = '\0';
-                break;
-            }
-            else if (letra == BORRAR)
-            {
-                if (contador > 0)
-                {
-                    printf("\b \b");
-                    contador--;
-                }
-            }
-            else
-            {
-                if (contador < LONGITUD)
-                {
-                    printf("*");
-                    passIngresada[contador] = letra;
-                    contador++;
-                }
+                printf("\b \b");
+                contador--;
             }
         }
-        for (j = 0; j < USUARIOS; j++)
+        else
         {
-            if (strcmp(account[j].username, userIngresado) == 0 && strcmp(account[j].password, passIngresada) == 0)
+            if (contador <= 10)
             {
-                printf("\nBienvenido al sistema!");
-                break;
-            }
-            else
-            {
-                printf("\nNombre de usuario y/o contrasena incorrecta.\n");
-                intentos++;
-                break;
+                printf("*");
+                password[contador] = letra;
+                contador++;
             }
         }
     }
-
-    return 0;
+    printf("\n");
+    if (strcmp(usuario, cuenta.username) == 0 && strcmp(password, cuenta.password) == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        intentos--;
+        if (intentos == 0)
+            return 1;
+        else
+        {
+            system("cls");
+            printf("Nombre de usuario y/o contrasena incorrecta.\n");
+            printf("Intentos restantes: %d\n", intentos);
+            return loginUsuario(intentos, cuenta);
+        }
+    }
 }
