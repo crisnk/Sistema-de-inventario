@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
+#include <time.h>
 
 // Teclas del código ASCII
 #define ENTER 13
@@ -69,6 +70,7 @@ int loginUsuario(int intentos);
 void imprimirUsuario();
 void menu();
 void volverMenu();
+char *asignarIdentificador();
 
 // Funciones menu
 void agregarProducto();
@@ -83,19 +85,19 @@ void agregarMonitor();
 void agregarNotebook();
 void agregarPC();
 
-// Funciones actualizar producto
-void actualizarTeclado();
-void actualizarMouse();
-void actualizarMonitor();
-void actualizarNotebook();
-void actualizarPC();
-
 // Funciones listar producto
 void listarTeclado();
 void listarMouse();
 void listarMonitor();
 void listarNotebook();
 void listarPC();
+
+// Funciones actualizar producto
+void actualizarTeclado();
+void actualizarMouse();
+void actualizarMonitor();
+void actualizarNotebook();
+void actualizarPC();
 
 // Funciones eliminar producto
 void eliminarTeclado();
@@ -214,8 +216,8 @@ void menu()
         imprimirUsuario();
         printf("\n--------- Menu ---------"
                "\n1. Agregar producto"
-               "\n2. Actualizar producto"
-               "\n3. Listar producto"
+               "\n2. Listar producto"
+               "\n3. Actualizar producto"
                "\n4. Eliminar producto"
                "\n5. Finalizar programa"
                "\nSeleccione una opcion: ");
@@ -233,17 +235,17 @@ void menu()
         agregarProducto();
         break;
     case 2:
-        actualizarProducto();
+        listarProducto();
         break;
     case 3:
-        listarProducto();
+        actualizarProducto();
         break;
     case 4:
         eliminarProducto();
         break;
     case 5:
         printf("------- Fin del programa -------\n");
-        return 0;
+        break;
     }
 }
 void volverMenu()
@@ -251,7 +253,7 @@ void volverMenu()
     int opcion;
     do
     {
-        printf("\n\n"
+        printf("\n"
                "1. Si\n"
                "2. No\n"
                "Volver al menu: ");
@@ -268,8 +270,16 @@ void volverMenu()
         system("cls");
         return menu();
     }
+    printf("------- Fin del programa -------\n");
 }
-
+char *asignarIdentificador() // Si retorno cadena de caracteres, la funcion debe declararse como puntero.
+{
+    srand(time(NULL));
+    int num = rand() % 1000;
+    static char identificador[7 + 1];
+    snprintf(identificador, 8, "TEC-%d", num);
+    return identificador;
+}
 // Funciones principales
 void agregarProducto()
 {
@@ -297,7 +307,10 @@ void agregarProducto()
     switch (opcion)
     {
     case 1:
+        system("cls");
+        imprimirUsuario();
         agregarTeclado();
+        volverMenu();
         break;
     case 2:
         // agregarMouse();
@@ -317,56 +330,10 @@ void agregarProducto()
         break;
     }
 }
-void actualizarProducto()
-{
-    system("cls");
-    int opcion;
-    do
-    {
-        imprimirUsuario();
-        printf("\n----- Actualizar producto -----"
-               "\n1. Teclado"
-               "\n2. Mouse"
-               "\n3. Monitor"
-               "\n4. Notebook"
-               "\n5. PC"
-               "\n6. Volver al menu principal"
-               "\nSeleccione una opcion: ");
-        scanf("%d", &opcion);
-        if (opcion < 1 || opcion > 6)
-        {
-            system("cls");
-            printf("La opcion ingresada no es correcta.\n");
-        }
-    } while (opcion < 1 || opcion > 6);
-
-    switch (opcion)
-    {
-    case 1:
-        // actualizarTeclado();
-        break;
-    case 2:
-        // actualizarMouse();
-        break;
-    case 3:
-        // actualizarMonitor();
-        break;
-    case 4:
-        // actualizarNotebook();
-        break;
-    case 5:
-        // actualizarPC();
-        break;
-    case 6:
-        system("cls");
-        menu();
-        break;
-    }
-}
 void listarProducto()
 {
     system("cls");
-    int opcion, opcion2;
+    int opcion;
     do
     {
         imprimirUsuario();
@@ -408,7 +375,55 @@ void listarProducto()
         break;
     case 6:
         system("cls");
+        menu();
+        break;
+    }
+}
+void actualizarProducto()
+{
+    system("cls");
+    int opcion;
+    do
+    {
         imprimirUsuario();
+        printf("\n----- Actualizar producto -----"
+               "\n1. Teclado"
+               "\n2. Mouse"
+               "\n3. Monitor"
+               "\n4. Notebook"
+               "\n5. PC"
+               "\n6. Volver al menu principal"
+               "\nSeleccione una opcion: ");
+        scanf("%d", &opcion);
+        if (opcion < 1 || opcion > 6)
+        {
+            system("cls");
+            printf("La opcion ingresada no es correcta.\n");
+        }
+    } while (opcion < 1 || opcion > 6);
+
+    switch (opcion)
+    {
+    case 1:
+        system("cls");
+        imprimirUsuario();
+        actualizarTeclado();
+        volverMenu();
+        break;
+    case 2:
+        // actualizarMouse();
+        break;
+    case 3:
+        // actualizarMonitor();
+        break;
+    case 4:
+        // actualizarNotebook();
+        break;
+    case 5:
+        // actualizarPC();
+        break;
+    case 6:
+        system("cls");
         menu();
         break;
     }
@@ -471,6 +486,10 @@ void agregarTeclado() // Marca, modelo, idioma, stock
         printf("Ha ocurrido un error al abrir el archivo.\n");
     else
     {
+
+        char *identificador = asignarIdentificador();
+        strcpy(tecladoIngresado.identificador, identificador);
+        printf("\n----- Agregar teclado -----\n");
         printf("Ingrese marca del teclado: ");
         scanf("%s", tecladoIngresado.marca);
         fflush(stdin);
@@ -488,6 +507,7 @@ void agregarTeclado() // Marca, modelo, idioma, stock
         fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
 
         fclose(teclados);
+        printf("- Teclado registrado exitosamente -");
     }
 }
 // Funciones listar producto
@@ -498,15 +518,49 @@ void listarTeclado()
 
     teclados = fopen("teclados.txt", "r");
     if (teclados == NULL)
-        printf("Ha ocurrido un error al abrir el archivo.");
+        printf("\nSin existencias.");
     else
     {
         printf("\n ----------------------- Teclados -----------------------\n"
-               "| - Marca -  |    - Modelo -   | - Idioma - | - Stock -  |\n");
+               "|  - ID -  | - Marca -  |    - Modelo -   | - Idioma - | - Stock -  |\n");
         while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
         {
-            printf("| %-10s | %-15s | %-10s | %-10d |", tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
+            printf("| %-8s | %-10s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
         }
     }
     fclose(teclados);
+}
+// Funciones actualizar producto
+void actualizarTeclado()
+{
+    FILE *teclados;
+    struct teclado tecladoIngresado;
+    int opcion;
+
+    teclados = fopen("teclados.txt", "r+");
+
+    if (teclados == NULL)
+        printf("\nSin existencias.");
+    else
+    {
+        listarTeclado();
+        printf("Seleccione el teclado que desea actualizar: ");
+        scanf("%d", &opcion);
+        fseek(teclados, opcion, SEEK_CUR);
+        printf("Ingrese marca del teclado: ");
+        scanf("%s", tecladoIngresado.marca);
+        fflush(stdin);
+        printf("Ingrese modelo del teclado: ");
+        scanf("%s", tecladoIngresado.modelo);
+        fflush(stdin);
+        printf("Ingrese idioma del teclado: ");
+        scanf("%s", tecladoIngresado.idioma);
+        fflush(stdin);
+        printf("Ingrese unidades del producto: ");
+        scanf("%d", &tecladoIngresado.stock);
+        fflush(stdin);
+        fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
+
+        fclose(teclados);
+    }
 }
