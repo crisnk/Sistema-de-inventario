@@ -69,8 +69,7 @@ struct LOGIN asignacionCuenta();
 int loginUsuario(int intentos);
 void imprimirUsuario();
 void menu();
-void volverMenu();
-char *asignarIdentificador();
+// void volverMenu();
 
 // Funciones menu
 void agregarProducto();
@@ -118,6 +117,7 @@ struct LOGIN cuentaSistema; // Variable global para evitar ser entregada como pa
 
 int main()
 {
+    srand(time(NULL));
     system("cls");
     int ingreso, intentos = 3;
     cuentaSistema = asignacionCuenta();
@@ -128,7 +128,8 @@ int main()
     {
         system("cls");
         printf("Bienvenido ");
-        menu();
+        while (1)
+            menu();
     }
     else
     {
@@ -245,9 +246,10 @@ void menu()
         break;
     case 5:
         printf("------- Fin del programa -------\n");
-        break;
+        exit(0);
     }
 }
+/*
 void volverMenu()
 {
     int opcion;
@@ -272,14 +274,7 @@ void volverMenu()
     }
     printf("------- Fin del programa -------\n");
 }
-char *asignarIdentificador() // Si retorno cadena de caracteres, la funcion debe declararse como puntero.
-{
-    srand(time(NULL));
-    int num = rand() % 1000;
-    static char identificador[7 + 1];
-    snprintf(identificador, 8, "TEC-%d", num);
-    return identificador;
-}
+*/
 // Funciones principales
 void agregarProducto()
 {
@@ -310,7 +305,7 @@ void agregarProducto()
         system("cls");
         imprimirUsuario();
         agregarTeclado();
-        volverMenu();
+        // volverMenu();
         break;
     case 2:
         // agregarMouse();
@@ -359,7 +354,8 @@ void listarProducto()
         system("cls");
         imprimirUsuario();
         listarTeclado();
-        volverMenu();
+        system("cls");
+        // volverMenu();
         break;
     case 2:
         // listarMouse();
@@ -408,7 +404,7 @@ void actualizarProducto()
         system("cls");
         imprimirUsuario();
         actualizarTeclado();
-        volverMenu();
+        // volverMenu();
         break;
     case 2:
         // actualizarMouse();
@@ -480,15 +476,28 @@ void agregarTeclado() // Marca, modelo, idioma, stock
 {
     FILE *teclados; // Declaro un puntero al archivo que voy a crear o escribir.
     struct teclado tecladoIngresado;
+    int aux, encontrado, opcion;
+    char ID[8];
 
     teclados = fopen("teclados.txt", "a+"); // 'a+' para leer, escribir y crear el archivo si es necesario.
     if (teclados == NULL)
         printf("Ha ocurrido un error al abrir el archivo.\n");
     else
     {
+        do
+        {
+            encontrado = 0;
+            aux = rand() % 10;
+            snprintf(ID, 8, "TEC-%d", aux);
+            fseek(teclados, 0, SEEK_SET); // Mueve el puntero al inicio del archivo
+            while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
+            {
+                if (strcmp(tecladoIngresado.identificador, ID) == 0)
+                    encontrado++;
+            }
+        } while (encontrado != 0);
 
-        char *identificador = asignarIdentificador();
-        strcpy(tecladoIngresado.identificador, identificador);
+        strcpy(tecladoIngresado.identificador, ID);
         printf("\n----- Agregar teclado -----\n");
         printf("Ingrese marca del teclado: ");
         scanf("%s", tecladoIngresado.marca);
@@ -507,7 +516,31 @@ void agregarTeclado() // Marca, modelo, idioma, stock
         fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
 
         fclose(teclados);
-        printf("- Teclado registrado exitosamente -");
+        system("cls");
+        imprimirUsuario();
+        printf("\n--- Teclado registrado exitosamente ---\n");
+        do
+        {
+            printf("Agregar otro teclado\n"
+                   "1. Si\n"
+                   "2. No\n"
+                   "Seleccione una opcion: ");
+            scanf("%d", &opcion);
+            if (opcion < 1 || opcion > 2)
+            {
+                system("cls");
+                imprimirUsuario();
+                printf("\nLa opcion seleccionada no es correcta.\n");
+            }
+        } while (opcion < 1 || opcion > 2);
+        if (opcion == 1)
+        {
+            system("cls");
+            imprimirUsuario();
+            agregarTeclado();
+        }
+        else
+            system("cls");
     }
 }
 // Funciones listar producto
@@ -518,10 +551,10 @@ void listarTeclado()
 
     teclados = fopen("teclados.txt", "r");
     if (teclados == NULL)
-        printf("\nSin existencias.");
+        printf("\nSin existencias.\n");
     else
     {
-        printf("\n ----------------------- Teclados -----------------------\n"
+        printf("\n ----------------------------- Teclados ----------------------------\n"
                "|  - ID -  | - Marca -  |    - Modelo -   | - Idioma - | - Stock -  |\n");
         while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
         {
@@ -529,6 +562,8 @@ void listarTeclado()
         }
     }
     fclose(teclados);
+    printf("Presione una tecla para continuar...");
+    getch();
 }
 // Funciones actualizar producto
 void actualizarTeclado()
