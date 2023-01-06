@@ -10,7 +10,7 @@
 
 struct teclado
 {
-    char identificador[7 + 1];
+    int identificador;
     char marca[10 + 1];
     char modelo[15 + 1];
     char idioma[10 + 1];
@@ -18,14 +18,14 @@ struct teclado
 };
 struct mouse
 {
-    char identificador[7 + 1];
+    int identificador;
     char marca[10 + 1];
     char modelo[15 + 1];
     int stock;
 };
 struct monitor
 {
-    char identificador[7 + 1];
+    int identificador;
     char marca[10 + 1];
     char modelo[15 + 1];
     float tamano;
@@ -33,7 +33,7 @@ struct monitor
 };
 struct notebook
 {
-    char identificador[7 + 1];
+    int identificador;
     char marca[10 + 1];
     char modelo[15 + 1];
     int ram;
@@ -43,7 +43,7 @@ struct notebook
 };
 struct PC
 {
-    char identificador[7 + 1];
+    int identificador;
     char marca[10 + 1];
     char modelo[15 + 1];
     int ram;
@@ -354,6 +354,8 @@ void listarProducto()
         system("cls");
         imprimirUsuario();
         listarTeclado();
+        printf("Presione una tecla para volver al menu principal...");
+        getch();
         system("cls");
         // volverMenu();
         break;
@@ -450,7 +452,7 @@ void eliminarProducto()
     switch (opcion)
     {
     case 1:
-        // eliminarTeclado();
+        eliminarTeclado();
         break;
     case 2:
         // eliminarMouse();
@@ -474,12 +476,13 @@ void eliminarProducto()
 // Funciones agregar producto
 void agregarTeclado() // Marca, modelo, idioma, stock
 {
-    FILE *teclados; // Declaro un puntero al archivo que voy a crear o escribir.
+    srand(time(NULL)); // Inicializo el generador de numeros aleatorios.
+    FILE *teclados;    // Declaro un puntero al archivo que voy a crear o escribir.
     struct teclado tecladoIngresado;
-    int aux, encontrado, opcion;
-    char ID[8];
+    int ID, encontrado, opcion, Stock;
+    char Marca[10 + 1], Modelo[15 + 1], Idioma[10 + 1];
 
-    teclados = fopen("teclados.txt", "a+"); // 'a+' para leer, escribir y crear el archivo si es necesario.
+    teclados = fopen("teclados.txt", "r+"); // 'r+' abre el archivo para lectura y escritura.
     if (teclados == NULL)
         printf("Ha ocurrido un error al abrir el archivo.\n");
     else
@@ -487,33 +490,58 @@ void agregarTeclado() // Marca, modelo, idioma, stock
         do
         {
             encontrado = 0;
-            aux = rand() % 10;
-            snprintf(ID, 8, "TEC-%d", aux);
-            fseek(teclados, 0, SEEK_SET); // Mueve el puntero al inicio del archivo
+            ID = 100000 + rand() % 900000; // Genero un numero aleatorio entre 100000 y 999999.
+            fseek(teclados, 0, SEEK_SET);  // Mueve el puntero al inicio del archivo
             while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
             {
-                if (strcmp(tecladoIngresado.identificador, ID) == 0)
+                if (tecladoIngresado.identificador == ID)
                     encontrado++;
             }
         } while (encontrado != 0);
 
-        strcpy(tecladoIngresado.identificador, ID);
         printf("\n----- Agregar teclado -----\n");
         printf("Ingrese marca del teclado: ");
-        scanf("%s", tecladoIngresado.marca);
+        scanf("%s", Marca);
         fflush(stdin);
         printf("Ingrese modelo del teclado: ");
-        scanf("%s", tecladoIngresado.modelo);
+        scanf("%s", Modelo);
         fflush(stdin);
         printf("Ingrese idioma del teclado: ");
-        scanf("%s", tecladoIngresado.idioma);
+        scanf("%s", Idioma);
         fflush(stdin);
         printf("Ingrese unidades del producto: ");
-        scanf("%d", &tecladoIngresado.stock);
+        scanf("%d", &Stock);
         fflush(stdin);
 
-        // Escribe todos los datos escritos en el archivo de texto.
-        fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
+        encontrado = 0;
+        fseek(teclados, 0, SEEK_SET);
+        // Lectura del archivo para verificar si el producto ya existe.
+        while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
+        {
+            if (strcasecmp(Marca, tecladoIngresado.marca) == 0 &&
+                strcasecmp(Modelo, tecladoIngresado.modelo) == 0 &&
+                strcasecmp(Idioma, tecladoIngresado.idioma) == 0)
+            {
+                fseek(teclados, -sizeof(struct teclado), SEEK_CUR);
+                strcpy(tecladoIngresado.marca, Marca);
+                strcpy(tecladoIngresado.modelo, Modelo);
+                strcpy(tecladoIngresado.idioma, Idioma);
+                tecladoIngresado.stock += Stock;
+                fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
+                encontrado++;
+                break;
+            }
+        }
+        // Si el producto no existe, se agrega al final del archivo.
+        if (encontrado == 0)
+        {
+            tecladoIngresado.identificador = ID;
+            strcpy(tecladoIngresado.marca, Marca);
+            strcpy(tecladoIngresado.modelo, Modelo);
+            strcpy(tecladoIngresado.idioma, Idioma);
+            tecladoIngresado.stock = Stock;
+            fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
+        }
 
         fclose(teclados);
         system("cls");
@@ -554,48 +582,121 @@ void listarTeclado()
         printf("\nSin existencias.\n");
     else
     {
-        printf("\n ----------------------------- Teclados ----------------------------\n"
-               "|  - ID -  | - Marca -  |    - Modelo -   | - Idioma - | - Stock -  |\n");
+        printf("\n ----------------------------- Teclados --------------------------\n"
+               "| - ID - | - Marca -  |    - Modelo -   | - Idioma - | - Stock -  |\n");
         while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
         {
-            printf("| %-8s | %-10s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
+            printf("| %-6d | %-10s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
         }
+        printf(" -----------------------------------------------------------------\n");
     }
     fclose(teclados);
-    printf("Presione una tecla para continuar...");
-    getch();
 }
 // Funciones actualizar producto
 void actualizarTeclado()
 {
     FILE *teclados;
     struct teclado tecladoIngresado;
-    int opcion;
-
-    teclados = fopen("teclados.txt", "r+");
+    int ID, encontrado = 0;
 
     if (teclados == NULL)
         printf("\nSin existencias.");
     else
     {
         listarTeclado();
-        printf("Seleccione el teclado que desea actualizar: ");
-        scanf("%d", &opcion);
-        fseek(teclados, opcion, SEEK_CUR);
-        printf("Ingrese marca del teclado: ");
-        scanf("%s", tecladoIngresado.marca);
+        printf("Seleccione el ID del teclado que desea actualizar: ");
+        scanf("%d", &ID);
         fflush(stdin);
-        printf("Ingrese modelo del teclado: ");
-        scanf("%s", tecladoIngresado.modelo);
-        fflush(stdin);
-        printf("Ingrese idioma del teclado: ");
-        scanf("%s", tecladoIngresado.idioma);
-        fflush(stdin);
-        printf("Ingrese unidades del producto: ");
-        scanf("%d", &tecladoIngresado.stock);
-        fflush(stdin);
-        fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
 
+        teclados = fopen("teclados.txt", "r+");
+        fseek(teclados, 0, SEEK_SET);
+
+        while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
+        {
+            if (ID == tecladoIngresado.identificador)
+            {
+                fseek(teclados, -sizeof(struct teclado), SEEK_CUR);
+                system("cls");
+                imprimirUsuario();
+                printf("\n ----------------------- Teclado seleccionado --------------------\n"
+                       "| - ID - | - Marca -  |    - Modelo -   | - Idioma - | - Stock -  |\n");
+                printf("| %-6d | %-10s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
+                printf(" -----------------------------------------------------------------\n");
+                printf("Ingrese marca del teclado: ");
+                scanf("%s", tecladoIngresado.marca);
+                fflush(stdin);
+                printf("Ingrese modelo del teclado: ");
+                scanf("%s", tecladoIngresado.modelo);
+                fflush(stdin);
+                printf("Ingrese idioma del teclado: ");
+                scanf("%s", tecladoIngresado.idioma);
+                fflush(stdin);
+                printf("Ingrese unidades del producto: ");
+                scanf("%d", &tecladoIngresado.stock);
+                fflush(stdin);
+                fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
+                encontrado++;
+                break;
+            }
+        }
+        if (encontrado == 0)
+            printf("El ID ingresado no existe.");
+        fclose(teclados);
+    }
+}
+// Funciones eliminar producto
+void eliminarTeclado()
+{
+    FILE *teclados;
+    struct teclado tecladoIngresado;
+    int ID, opcion, encontrado = 0;
+
+    if (teclados == NULL)
+        printf("\nSin existencias.");
+    else
+    {
+        listarTeclado();
+        printf("Seleccione el ID del teclado que desea eliminar: ");
+        scanf("%d", &ID);
+        fflush(stdin);
+
+        teclados = fopen("teclados.txt", "r+");
+        fseek(teclados, 0, SEEK_SET);
+
+        while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
+        {
+            if (ID == tecladoIngresado.identificador)
+            {
+                fseek(teclados, -sizeof(struct teclado), SEEK_CUR);
+                system("cls");
+                imprimirUsuario();
+                printf("\n ----------------------- Teclado seleccionado --------------------\n"
+                       "| - ID - | - Marca -  |    - Modelo -   | - Idioma - | - Stock -  |\n");
+                printf("| %-6d | %-10s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
+                printf(" -----------------------------------------------------------------\n");
+                printf("Esta seguro que desea eliminar el teclado seleccionado?\n"
+                       "1. Si\n"
+                       "2. No\n"
+                       "Seleccione una opcion: ");
+                scanf("%d", &opcion);
+                fflush(stdin);
+                if (opcion == 1)
+                {
+                    tecladoIngresado.identificador = 0;
+                    strcpy(tecladoIngresado.marca, "");
+                    strcpy(tecladoIngresado.modelo, "");
+                    strcpy(tecladoIngresado.idioma, "");
+                    tecladoIngresado.stock = 0;
+                    fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
+                    encontrado++;
+                    break;
+                }
+                else
+                    break;
+            }
+        }
+        if (encontrado == 0)
+            printf("El ID ingresado no existe.");
         fclose(teclados);
     }
 }
