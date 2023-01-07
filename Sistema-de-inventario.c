@@ -70,7 +70,6 @@ struct LOGIN asignacionCuenta();
 int loginUsuario(int intentos);
 void imprimirUsuario();
 void menu();
-// void volverMenu();
 
 // Funciones menu
 void agregarProducto();
@@ -224,6 +223,7 @@ void menu()
                "\n5. Finalizar programa"
                "\nSeleccione una opcion: ");
         scanf("%d", &opcion);
+        fflush(stdin);
         if (opcion < 1 || opcion > 5)
         {
             system("cls");
@@ -268,6 +268,7 @@ void agregarProducto()
                "\n6. Volver al menu principal"
                "\nSeleccione una opcion: ");
         scanf("%d", &opcion);
+        fflush(stdin);
         if (opcion < 1 || opcion > 6)
         {
             system("cls");
@@ -281,7 +282,6 @@ void agregarProducto()
         system("cls");
         imprimirUsuario();
         agregarTeclado();
-        // volverMenu();
         break;
     case 2:
         system("cls");
@@ -325,6 +325,7 @@ void listarProducto()
                "\n6. Volver al menu principal"
                "\nSeleccione una opcion: ");
         scanf("%d", &opcion);
+        fflush(stdin);
         if (opcion < 1 || opcion > 6)
         {
             system("cls");
@@ -396,6 +397,7 @@ void actualizarProducto()
                "\n6. Volver al menu principal"
                "\nSeleccione una opcion: ");
         scanf("%d", &opcion);
+        fflush(stdin);
         if (opcion < 1 || opcion > 6)
         {
             system("cls");
@@ -409,7 +411,6 @@ void actualizarProducto()
         system("cls");
         imprimirUsuario();
         actualizarTeclado();
-        // volverMenu();
         break;
     case 2:
         // actualizarMouse();
@@ -445,6 +446,7 @@ void eliminarProducto()
                "\n6. Volver al menu principal"
                "\nSeleccione una opcion: ");
         scanf("%d", &opcion);
+        fflush(stdin);
         if (opcion < 1 || opcion > 6)
         {
             system("cls");
@@ -512,13 +514,14 @@ void agregarTeclado() // ID (Random), marca[16], modelo[16], idioma[10], stock.
 
         printf("\n------------------------- Agregar Teclado -------------------------\n");
         printf("Ingrese marca del teclado: ");
-        scanf("%s", Marca);
+        fflush(stdin);
+        gets(Marca);
         fflush(stdin);
         printf("Ingrese modelo del teclado: ");
-        scanf("%s", Modelo);
+        gets(Modelo);
         fflush(stdin);
         printf("Ingrese idioma del teclado: ");
-        scanf("%s", Idioma);
+        gets(Idioma);
         fflush(stdin);
         printf("Ingrese unidades del producto: ");
         scanf("%d", &Stock);
@@ -582,6 +585,7 @@ void agregarTeclado() // ID (Random), marca[16], modelo[16], idioma[10], stock.
                    "2. No\n"
                    "Seleccione una opcion: ");
             scanf("%d", &opcion);
+            fflush(stdin);
             if (opcion < 1 || opcion > 2)
             {
                 system("cls");
@@ -631,13 +635,14 @@ void agregarMouse() // ID (Random), marca[16], modelo[16], stock.
         } while (encontrado != 0);
 
         printf("\n------------------------- Agregar Mouse -------------------------\n");
-        printf("Ingrese la marca del mouse: "); // Marca[10+1]
-        scanf("%s", Marca);
+        printf("Ingrese la marca del mouse: ");
         fflush(stdin);
-        printf("Ingrese el modelo del mouse: "); // Modelo[15+1]
-        scanf("%s", Modelo);
+        gets(Marca);
         fflush(stdin);
-        printf("Ingrese unidades del producto: "); // Stock
+        printf("Ingrese el modelo del mouse: ");
+        gets(Modelo);
+        fflush(stdin);
+        printf("Ingrese unidades del producto: ");
         scanf("%d", &Stock);
         fflush(stdin);
 
@@ -689,6 +694,7 @@ void agregarMouse() // ID (Random), marca[16], modelo[16], stock.
                    "2. No\n"
                    "Seleccione una opcion: ");
             scanf("%d", &opcion);
+            fflush(stdin);
             if (opcion < 1 || opcion > 2)
             {
                 system("cls");
@@ -739,13 +745,14 @@ void agregarMonitor() // ID (Random), marca[16], modelo[16], tamaño[5], stock.
 
         printf("\n------------------------ Agregar Monitor ------------------------\n");
         printf("Ingrese la marca del monitor: ");
-        scanf("%s", Marca);
+        fflush(stdin);
+        gets(Marca);
         fflush(stdin);
         printf("Ingrese el modelo del monitor: ");
-        scanf("%s", Modelo);
+        gets(Modelo);
         fflush(stdin);
         printf("Ingrese el tamano del monitor: ");
-        scanf("%s", Tamano);
+        gets(Tamano);
         fflush(stdin);
         printf("Ingrese unidades del producto: ");
         scanf("%d", &Stock);
@@ -803,6 +810,7 @@ void agregarMonitor() // ID (Random), marca[16], modelo[16], tamaño[5], stock.
                    "2. No\n"
                    "Seleccione una opcion: ");
             scanf("%d", &opcion);
+            fflush(stdin);
             if (opcion < 1 || opcion > 2)
             {
                 system("cls");
@@ -853,19 +861,20 @@ void agregarNotebook() // ID (Random), marca[16], modelo[16], procesador[16], RA
 
         printf("\n----------------------- Agregar Notebook ------------------------\n");
         printf("Ingrese la marca del notebook: ");
-        scanf("%s", Marca);
+        fflush(stdin);
+        gets(Marca);
         fflush(stdin);
         printf("Ingrese el modelo del notebook: ");
-        scanf("%s", Modelo);
+        gets(Modelo);
         fflush(stdin);
         printf("Ingrese el procesador del notebook: ");
-        scanf("%s", Procesador);
+        gets(Procesador);
         fflush(stdin);
         printf("Ingrese la RAM del notebook: ");
-        scanf("%s", RAM);
+        gets(RAM);
         fflush(stdin);
         printf("Ingrese la pantalla del notebook: ");
-        scanf("%s", Pantalla);
+        gets(Pantalla);
         fflush(stdin);
         printf("Ingrese unidades del producto: ");
         scanf("%d", &Stock);
@@ -931,6 +940,7 @@ void agregarNotebook() // ID (Random), marca[16], modelo[16], procesador[16], RA
                    "2. No\n"
                    "Seleccione una opcion: ");
             scanf("%d", &opcion);
+            fflush(stdin);
             if (opcion < 1 || opcion > 2)
             {
                 system("cls");
@@ -987,46 +997,47 @@ void agregarPC()
 
         printf("\n----------------------- Agregar PC ------------------------\n");
         printf("Ingrese la marca de la PC: ");
-        scanf("%s", Marca);
+        fflush(stdin);
+        gets(Marca);
         fflush(stdin);
         printf("Ingrese el modelo de la PC: ");
-        scanf("%s", Modelo);
+        gets(Modelo);
         fflush(stdin);
         printf("Ingrese el procesador de la PC: ");
-        scanf("%s", Procesador);
+        gets(Procesador);
         fflush(stdin);
         printf("Ingrese la RAM de la PC: ");
-        scanf("%s", RAM);
+        gets(RAM);
         fflush(stdin);
         printf("Ingrese el stock de la PC: ");
         scanf("%d", &StockPC);
         fflush(stdin);
         printf("\n--------------------- Agregar Teclado PC ----------------------\n");
         printf("Ingrese la marca del teclado: ");
-        scanf("%s", MarcaTeclado);
+        gets(MarcaTeclado);
         fflush(stdin);
         printf("Ingrese el modelo del teclado: ");
-        scanf("%s", ModeloTeclado);
+        gets(ModeloTeclado);
         fflush(stdin);
         printf("Ingrese el idioma del teclado: ");
-        scanf("%s", IdiomaTeclado);
+        gets(IdiomaTeclado);
         fflush(stdin);
         printf("\n--------------------- Agregar Mouse PC ----------------------\n");
         printf("Ingrese la marca del mouse: ");
-        scanf("%s", MarcaMouse);
+        gets(MarcaMouse);
         fflush(stdin);
         printf("Ingrese el modelo del mouse: ");
-        scanf("%s", ModeloMouse);
+        gets(ModeloMouse);
         fflush(stdin);
         printf("\n--------------------- Agregar Monitor PC ----------------------\n");
         printf("Ingrese la marca del monitor: ");
-        scanf("%s", MarcaMonitor);
+        gets(MarcaMonitor);
         fflush(stdin);
         printf("Ingrese el modelo del monitor: ");
-        scanf("%s", ModeloMonitor);
+        gets(ModeloMonitor);
         fflush(stdin);
-        printf("Ingrese el tamaño del monitor: ");
-        scanf("%s", TamanoMonitor);
+        printf("Ingrese el tamano del monitor: ");
+        gets(TamanoMonitor);
         fflush(stdin);
 
         fseek(pcs, 0, SEEK_SET);
@@ -1127,6 +1138,7 @@ void agregarPC()
                    "2. No\n"
                    "Seleccione una opcion: ");
             scanf("%d", &opcion);
+            fflush(stdin);
             if (opcion == 1)
             {
                 system("cls");
@@ -1135,7 +1147,7 @@ void agregarPC()
             }
             else
                 system("cls");
-        } while(opcion < 1 || opcion > 2);
+        } while (opcion < 1 || opcion > 2);
     }
 }
 // Funciones listar producto
@@ -1227,20 +1239,68 @@ void listarPC()
 {
     FILE *pcs;
     struct PC pcIngresado;
+    int ID, opcion;
 
     pcs = fopen("pcs.txt", "r");
     if (pcs == NULL)
         printf("\nSin existencias.\n");
     else
     {
-        printf("\n ----------------------------- PCs --------------------------\n"
-               "| - ID - | - Marca -  |    - Modelo -   | - Tamaño - | - Stock -  |\n");
-        while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
+        do
         {
-            if (pcIngresado.identificador != 0)
-                printf("| %-6d | %-15s | %-15s | %-10s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.monitorPC.tamano, pcIngresado.monitorPC.stock);
+            printf("\n --------------------------------------------- PCs -------------------------------------------\n"
+                   "| - ID - |    - Marca -    |    - Modelo -   |  - Procesador - |     - RAM -     | - Stock -  |\n");
+            while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
+            {
+                if (pcIngresado.identificador != 0)
+                    printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.procesador, pcIngresado.ram, pcIngresado.stock);
+            }
+            printf(" ---------------------------------------------------------------------------------------------\n");
+            printf("\nRevisar perifericos del PC\n"
+                   "1. Si\n"
+                   "2. No\n"
+                   "Seleccione una opcion: ");
+            scanf("%d", &opcion);
+            fflush(stdin);
+            if (opcion < 1 || opcion > 2)
+            {
+                system("cls");
+                printf("La opcion seleccionada no es correcta.\n");
+                imprimirUsuario();
+            }
+        } while (opcion < 1 || opcion > 2);
+        if (opcion == 1)
+        {
+            printf("Ingrese el ID del PC que desea revisar: ");
+            scanf("%d", &ID);
+            fflush(stdin);
+            fseek(pcs, 0, SEEK_SET);
+            while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
+            {
+                if (ID == pcIngresado.identificador)
+                {
+                    system("cls");
+                    imprimirUsuario();
+                    printf("\n --------------------------------------- PC seleccionado -------------------------------------\n"
+                           "| - ID - |    - Marca -    |    - Modelo -   |  - Procesador - |     - RAM -     | - Stock -  |\n");
+                    printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.procesador, pcIngresado.ram, pcIngresado.stock);
+
+                    printf(" ---------------------------------------------------------------------------------------------");
+                    printf("\n ------------------- Teclado ----------------\n"
+                           "| - ID - |    - Marca -    |    - Modelo -   |\n");
+                    printf("| %-6d | %-15s | %-15s |\n", pcIngresado.tecladoPC.identificador, pcIngresado.tecladoPC.marca, pcIngresado.tecladoPC.modelo);
+                    printf(" --------------------------------------------");
+                    printf("\n -------------------- Mouse -----------------\n"
+                           "| - ID - |    - Marca -    |    - Modelo -   |\n");
+                    printf("| %-6d | %-15s | %-15s |\n", pcIngresado.mousePC.identificador, pcIngresado.mousePC.marca, pcIngresado.mousePC.modelo);
+                    printf(" --------------------------------------------");
+                    printf("\n --------------------------- Monitor -----------------------\n"
+                           "| - ID - |    - Marca -    |    - Modelo -   | - Pantalla - |\n");
+                    printf("| %-6d | %-15s | %-15s | %+11s\" |\n", pcIngresado.monitorPC.identificador, pcIngresado.monitorPC.marca, pcIngresado.monitorPC.modelo, pcIngresado.monitorPC.tamano);
+                    printf(" -----------------------------------------------------------\n");
+                }
+            }
         }
-        printf(" -----------------------------------------------------------------\n");
     }
     fclose(pcs);
 }
@@ -1276,13 +1336,14 @@ void actualizarTeclado()
                 printf("| %-6d | %-10s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
                 printf(" -----------------------------------------------------------------\n");
                 printf("Ingrese marca del teclado: ");
-                scanf("%s", tecladoIngresado.marca);
+                fflush(stdin);
+                gets(tecladoIngresado.marca);
                 fflush(stdin);
                 printf("Ingrese modelo del teclado: ");
-                scanf("%s", tecladoIngresado.modelo);
+                gets(tecladoIngresado.modelo);
                 fflush(stdin);
                 printf("Ingrese idioma del teclado: ");
-                scanf("%s", tecladoIngresado.idioma);
+                gets(tecladoIngresado.idioma);
                 fflush(stdin);
                 printf("Ingrese unidades del producto: ");
                 scanf("%d", &tecladoIngresado.stock);
