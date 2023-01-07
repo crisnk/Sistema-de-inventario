@@ -76,6 +76,7 @@ void agregarProducto();
 void actualizarProducto();
 void listarProducto();
 void eliminarProducto();
+void busqueda();
 
 // Funciones agregar producto
 void agregarTeclado();
@@ -221,16 +222,17 @@ void menu()
                "\n2. Listar producto"
                "\n3. Actualizar producto"
                "\n4. Eliminar producto"
-               "\n5. Finalizar programa"
+               "\n5. Busqueda por marca"
+               "\n6. Finalizar programa"
                "\nSeleccione una opcion: ");
         scanf("%d", &opcion);
         fflush(stdin);
-        if (opcion < 1 || opcion > 5)
+        if (opcion < 1 || opcion > 6)
         {
             system("cls");
-            printf("\nLa opcion ingresada no es correcta.");
+            printf("La opcion ingresada no es correcta.\n");
         }
-    } while (opcion < 1 || opcion > 5);
+    } while (opcion < 1 || opcion > 6);
 
     switch (opcion)
     {
@@ -247,11 +249,16 @@ void menu()
         eliminarProducto();
         break;
     case 5:
+        system("cls");
+        imprimirUsuario();
+        busqueda();
+        system("cls");
+        break;
+    case 6:
         printf("------- Fin del programa -------\n");
         exit(0);
     }
 }
-
 // Funciones principales
 void agregarProducto()
 {
@@ -506,7 +513,63 @@ void eliminarProducto()
         break;
     }
 }
+void busqueda()
+{
+    FILE *teclados, *mouses, *monitores, *notebooks, *pcs;
+    struct teclado tecladoBuscado;
+    struct mouse mouseBuscado;
+    struct monitor monitorBuscado;
+    struct notebook notebookBuscado;
+    struct PC pcBuscado;
+    char marcaBuscada[16];
+    teclados = fopen("teclados.txt", "r");
+    mouses = fopen("mouses.txt", "r");
+    monitores = fopen("monitores.txt", "r");
+    notebooks = fopen("notebooks.txt", "r");
+    pcs = fopen("pcs.txt", "r");
 
+    printf("\n----------------------- Busqueda de productos -----------------------\n");
+    printf("Ingrese la marca del producto: ");
+    gets(marcaBuscada);
+    fflush(stdin);
+    printf(" ---------------------- Productos encontrados -----------------------\n"
+           "| - Tipo - | - ID - |    - Marca -    |    - Modelo -   | - Stock -  |\n");
+
+    while (fread(&tecladoBuscado, sizeof(struct teclado), 1, teclados))
+    {
+        if (strcasecmp(tecladoBuscado.marca, marcaBuscada) == 0)
+            printf("| Teclado  | %-6d | %-15s | %-15s | %-10d |\n", tecladoBuscado.identificador, tecladoBuscado.marca, tecladoBuscado.modelo, tecladoBuscado.stock);
+    }
+    while (fread(&mouseBuscado, sizeof(struct mouse), 1, mouses))
+    {
+        if (strcasecmp(mouseBuscado.marca, marcaBuscada) == 0)
+            printf("| Mouse    | %-6d | %-15s | %-15s | %-10d |\n", mouseBuscado.identificador, mouseBuscado.marca, mouseBuscado.modelo, mouseBuscado.stock);
+    }
+    while (fread(&monitorBuscado, sizeof(struct monitor), 1, monitores))
+    {
+        if (strcasecmp(monitorBuscado.marca, marcaBuscada) == 0)
+            printf("| Monitor  | %-6d | %-15s | %-15s | %-10d |\n", monitorBuscado.identificador, monitorBuscado.marca, monitorBuscado.modelo, monitorBuscado.stock);
+    }
+    while (fread(&notebookBuscado, sizeof(struct notebook), 1, notebooks))
+    {
+        if (strcasecmp(notebookBuscado.marca, marcaBuscada) == 0)
+            printf("| Notebook | %-6d | %-15s | %-15s | %-10d |\n", notebookBuscado.identificador, notebookBuscado.marca, notebookBuscado.modelo, notebookBuscado.stock);
+    }
+    while (fread(&pcBuscado, sizeof(struct PC), 1, pcs))
+    
+        if (strcasecmp(pcBuscado.marca, marcaBuscada) == 0)
+            printf("| PC       | %-6d | %-15s | %-15s | %-10d |\n", pcBuscado.identificador, pcBuscado.marca, pcBuscado.modelo, pcBuscado.stock);
+    
+    printf(" --------------------------------------------------------------------\n");
+    fclose(teclados);
+    fclose(mouses);
+    fclose(monitores);
+    fclose(notebooks);
+    fclose(pcs);
+
+    printf("Presione cualquier tecla para volver al menu principal...");
+    getch();
+}
 // Funciones agregar producto
 void agregarTeclado() // ID (Random), marca[16], modelo[16], idioma[10], stock.
 {
@@ -1342,7 +1405,6 @@ void listarSoloPC()
     }
     fclose(pcs);
 }
-
 // Funciones actualizar producto
 void actualizarTeclado()
 {
