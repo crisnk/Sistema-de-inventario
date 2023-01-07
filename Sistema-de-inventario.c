@@ -12,7 +12,7 @@
 struct teclado
 {
     int identificador;
-    char marca[10 + 1];
+    char marca[15 + 1];
     char modelo[15 + 1];
     char idioma[10 + 1];
     int stock;
@@ -20,35 +20,35 @@ struct teclado
 struct mouse
 {
     int identificador;
-    char marca[10 + 1];
+    char marca[15 + 1];
     char modelo[15 + 1];
     int stock;
 };
 struct monitor
 {
     int identificador;
-    char marca[10 + 1];
+    char marca[15 + 1];
     char modelo[15 + 1];
-    float tamano;
+    char tamano[4 + 1];
     int stock;
 };
 struct notebook
 {
     int identificador;
-    char marca[10 + 1];
+    char marca[15 + 1];
     char modelo[15 + 1];
-    int ram;
-    char procesador[5 + 1];
-    float pantalla;
+    char procesador[15 + 1];
+    char ram[15 + 1];
+    char pantalla[4 + 1];
     int stock;
 };
 struct PC
 {
     int identificador;
-    char marca[10 + 1];
+    char marca[15 + 1];
     char modelo[15 + 1];
-    int ram;
-    char procesador[5 + 1];
+    char procesador[15 + 1];
+    char ram[15 + 1];
     struct teclado tecladoPC;
     struct mouse mousePC;
     struct monitor monitorPC;
@@ -250,32 +250,7 @@ void menu()
         exit(0);
     }
 }
-/*
-void volverMenu()
-{
-    int opcion;
-    do
-    {
-        printf("\n"
-               "1. Si\n"
-               "2. No\n"
-               "Volver al menu: ");
-        scanf("%d", &opcion);
-        if (opcion < 1 || opcion > 2)
-        {
-            system("cls");
-            printf("La opcion ingresada no es correcta.");
-            imprimirUsuario();
-        }
-    } while (opcion < 1 || opcion > 2);
-    if (opcion == 1)
-    {
-        system("cls");
-        return menu();
-    }
-    printf("------- Fin del programa -------\n");
-}
-*/
+
 // Funciones principales
 void agregarProducto()
 {
@@ -314,13 +289,19 @@ void agregarProducto()
         agregarMouse();
         break;
     case 3:
-        // agregarMonitor();
+        system("cls");
+        imprimirUsuario();
+        agregarMonitor();
         break;
     case 4:
-        // agregarNotebook();
+        system("cls");
+        imprimirUsuario();
+        agregarNotebook();
         break;
     case 5:
-        // agregarPC();
+        system("cls");
+        imprimirUsuario();
+        agregarPC();
         break;
     case 6:
         system("cls");
@@ -360,19 +341,38 @@ void listarProducto()
         printf("Presione una tecla para volver al menu principal...");
         getch();
         system("cls");
-        // volverMenu();
         break;
     case 2:
-        // listarMouse();
+        system("cls");
+        imprimirUsuario();
+        listarMouse();
+        printf("Presione una tecla para volver al menu principal...");
+        getch();
+        system("cls");
         break;
     case 3:
-        // listarMonitor();
+        system("cls");
+        imprimirUsuario();
+        listarMonitor();
+        printf("Presione una tecla para volver al menu principal...");
+        getch();
+        system("cls");
         break;
     case 4:
-        // listarNotebook();
+        system("cls");
+        imprimirUsuario();
+        listarNotebook();
+        printf("Presione una tecla para volver al menu principal...");
+        getch();
+        system("cls");
         break;
     case 5:
-        // listarPC();
+        system("cls");
+        imprimirUsuario();
+        listarPC();
+        printf("Presione una tecla para volver al menu principal...");
+        getch();
+        system("cls");
         break;
     case 6:
         system("cls");
@@ -479,34 +479,38 @@ void eliminarProducto()
 }
 
 // Funciones agregar producto
-void agregarTeclado() // ID (Random), marca[10+1], modelo[15+1], idioma[10], stock.
+void agregarTeclado() // ID (Random), marca[16], modelo[16], idioma[10], stock.
 {
-    srand(time(NULL)); // Inicializo el generador de numeros aleatorios.
-    FILE *teclados;    // Declaro el puntero al archivo.
+    FILE *teclados; // Declaro el puntero al archivo.
     struct teclado tecladoIngresado;
     int ID, encontrado, opcion, Stock;
-    char Marca[10 + 1], Modelo[15 + 1], Idioma[10 + 1];
+    char Marca[15 + 1], Modelo[15 + 1], Idioma[10 + 1];
 
     teclados = fopen("teclados.txt", "r+"); // 'r+' abre el archivo para lectura y escritura.
     // Importante: Si el archivo no existe, devuelve NULL en vez de crearlo, puede ser utilizado "a+" para crearlo pero esto impide poder manejarse
     // con las ubicaciones de los productos y solo escribiría al final del archivo, por lo que debe ser creado el archivo de texto manualmente en caso de ser eliminado.
     if (teclados == NULL)
+    {
+        system("cls");
         printf("El archivo de texto no ha sido creado.\n");
+    }
     else
     {
+        // Generacion del ID aleatorio con validacion de que no haya otro igual.
         do
         {
             encontrado = 0;
-            ID = 100000 + rand() % 900000; // Genero un numero aleatorio entre 100000 y 999999 para que se vea más prolijo al mostrarlo.
-            fseek(teclados, 0, SEEK_SET);  // Mueve el puntero al inicio del archivo.
+            ID = 100000 + rand() % 900000;                                        // Genero un numero aleatorio entre 100000 y 999999 para que se vea más prolijo al mostrarlo.
+            fseek(teclados, 0, SEEK_SET);                                         // Mueve el puntero al inicio del archivo.
             while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados)) // Mientras no llegue al final del archivo, lee cada registro de producto.
-            {
-                if (tecladoIngresado.identificador == ID)
+                if (ID == tecladoIngresado.identificador)
+                {
                     encontrado = 1;
-            }
+                    break;
+                }
         } while (encontrado != 0);
 
-        printf("\n----- Agregar teclado -----\n");
+        printf("\n------------------------- Agregar Teclado -------------------------\n");
         printf("Ingrese marca del teclado: ");
         scanf("%s", Marca);
         fflush(stdin);
@@ -525,20 +529,6 @@ void agregarTeclado() // ID (Random), marca[10+1], modelo[15+1], idioma[10], sto
         // Lectura del archivo para verificar si el producto ya existe.
         while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
         {
-            // Si el producto ya existe, se actualiza el stock.
-            if (strcasecmp(Marca, tecladoIngresado.marca) == 0 && // strcasecmp compara dos cadenas sin importar mayúsculas ni minúsculas.
-                strcasecmp(Modelo, tecladoIngresado.modelo) == 0 &&
-                strcasecmp(Idioma, tecladoIngresado.idioma) == 0)
-            {
-                fseek(teclados, -sizeof(struct teclado), SEEK_CUR);
-                strcpy(tecladoIngresado.marca, Marca);
-                strcpy(tecladoIngresado.modelo, Modelo);
-                strcpy(tecladoIngresado.idioma, Idioma);
-                tecladoIngresado.stock += Stock;
-                fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
-                encontrado = 1;
-                break;
-            }
             // Si hay un espacio con ID "0" (significa que fue borrado recientemente), se reemplaza por el producto ingresado.
             // El programa como tal no imprime los productos con ID "0", pero esa posicion se conserva como vacia y se rellena al momento de agregar un producto
             // para ahorrar memoria y que no se que queden con espacios o "basura" en el archivo.
@@ -550,6 +540,20 @@ void agregarTeclado() // ID (Random), marca[10+1], modelo[15+1], idioma[10], sto
                 strcpy(tecladoIngresado.modelo, Modelo);
                 strcpy(tecladoIngresado.idioma, Idioma);
                 tecladoIngresado.stock = Stock;
+                fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
+                encontrado = 1;
+                break;
+            }
+            // Si el producto ya existe, se actualiza el stock.
+            if (strcasecmp(Marca, tecladoIngresado.marca) == 0 && // strcasecmp compara dos cadenas sin importar mayúsculas ni minúsculas.
+                strcasecmp(Modelo, tecladoIngresado.modelo) == 0 &&
+                strcasecmp(Idioma, tecladoIngresado.idioma) == 0)
+            {
+                fseek(teclados, -sizeof(struct teclado), SEEK_CUR);
+                strcpy(tecladoIngresado.marca, Marca);
+                strcpy(tecladoIngresado.modelo, Modelo);
+                strcpy(tecladoIngresado.idioma, Idioma);
+                tecladoIngresado.stock += Stock;
                 fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
                 encontrado = 1;
                 break;
@@ -595,7 +599,545 @@ void agregarTeclado() // ID (Random), marca[10+1], modelo[15+1], idioma[10], sto
             system("cls");
     }
 }
+void agregarMouse() // ID (Random), marca[16], modelo[16], stock.
+{
+    FILE *mouses;
+    struct mouse mouseIngresado;
+    int ID, encontrado, opcion, Stock;
+    char Marca[16], Modelo[16];
 
+    mouses = fopen("mouses.txt", "r+");
+
+    if (mouses == NULL)
+    {
+        system("cls");
+        printf("El archivo de texto no ha sido creado.\n");
+    }
+    else
+    {
+        do
+        {
+            encontrado = 0;
+            ID = 100000 + rand() % 900000;
+            fseek(mouses, 0, SEEK_SET);
+            while (fread(&mouseIngresado, sizeof(struct mouse), 1, mouses))
+            {
+                if (ID == mouseIngresado.identificador)
+                {
+                    encontrado = 1;
+                    break;
+                }
+            }
+        } while (encontrado != 0);
+
+        printf("\n------------------------- Agregar Mouse -------------------------\n");
+        printf("Ingrese la marca del mouse: "); // Marca[10+1]
+        scanf("%s", Marca);
+        fflush(stdin);
+        printf("Ingrese el modelo del mouse: "); // Modelo[15+1]
+        scanf("%s", Modelo);
+        fflush(stdin);
+        printf("Ingrese unidades del producto: "); // Stock
+        scanf("%d", &Stock);
+        fflush(stdin);
+
+        fseek(mouses, 0, SEEK_SET);
+
+        while (fread(&mouseIngresado, sizeof(struct mouse), 1, mouses))
+        {
+            if (mouseIngresado.identificador == 0)
+            {
+                fseek(mouses, -sizeof(struct mouse), SEEK_CUR);
+                mouseIngresado.identificador = ID;
+                strcpy(mouseIngresado.marca, Marca);
+                strcpy(mouseIngresado.modelo, Modelo);
+                mouseIngresado.stock = Stock;
+                fwrite(&mouseIngresado, sizeof(struct mouse), 1, mouses);
+                encontrado = 1;
+                break;
+            }
+            if (strcasecmp(Marca, mouseIngresado.marca) == 0 &&
+                strcasecmp(Modelo, mouseIngresado.modelo) == 0)
+            {
+                fseek(mouses, -sizeof(struct mouse), SEEK_CUR);
+                strcpy(mouseIngresado.marca, Marca);
+                strcpy(mouseIngresado.modelo, Modelo);
+                mouseIngresado.stock += Stock;
+                fwrite(&mouseIngresado, sizeof(struct mouse), 1, mouses);
+                encontrado = 1;
+                break;
+            }
+        }
+        if (encontrado == 0)
+        {
+            fseek(mouses, 0, SEEK_END);
+            mouseIngresado.identificador = ID;
+            strcpy(mouseIngresado.marca, Marca);
+            strcpy(mouseIngresado.modelo, Modelo);
+            mouseIngresado.stock = Stock;
+            fwrite(&mouseIngresado, sizeof(struct mouse), 1, mouses);
+        }
+        fclose(mouses);
+
+        system("cls");
+        imprimirUsuario();
+        printf("\n--- Mouse registrado exitosamente ---\n");
+        do
+        {
+            printf("Agregar otro mouse\n"
+                   "1. Si\n"
+                   "2. No\n"
+                   "Seleccione una opcion: ");
+            scanf("%d", &opcion);
+            if (opcion < 1 || opcion > 2)
+            {
+                system("cls");
+                imprimirUsuario();
+                printf("\nLa opcion seleccionada no es correcta.\n");
+            }
+        } while (opcion < 1 || opcion > 2);
+        if (opcion == 1)
+        {
+            system("cls");
+            imprimirUsuario();
+            agregarMouse();
+        }
+        else
+            system("cls");
+    }
+}
+void agregarMonitor() // ID (Random), marca[16], modelo[16], tamaño[5], stock.
+{
+    FILE *monitores;
+    struct monitor monitorIngresado;
+    int ID, encontrado, opcion, Stock;
+    char Marca[16], Modelo[16], Tamano[5];
+
+    monitores = fopen("monitores.txt", "r+");
+
+    if (monitores == NULL)
+    {
+        system("cls");
+        printf("El archivo de texto no ha sido creado.\n");
+    }
+    else
+    {
+        do
+        {
+            encontrado = 0;
+            ID = 100000 + rand() % 900000;
+            fseek(monitores, 0, SEEK_SET);
+            while (fread(&monitorIngresado, sizeof(struct monitor), 1, monitores))
+            {
+                if (ID == monitorIngresado.identificador)
+                {
+                    encontrado = 1;
+                    break;
+                }
+            }
+        } while (encontrado != 0);
+
+        printf("\n------------------------ Agregar Monitor ------------------------\n");
+        printf("Ingrese la marca del monitor: ");
+        scanf("%s", Marca);
+        fflush(stdin);
+        printf("Ingrese el modelo del monitor: ");
+        scanf("%s", Modelo);
+        fflush(stdin);
+        printf("Ingrese el tamano del monitor: ");
+        scanf("%s", Tamano);
+        fflush(stdin);
+        printf("Ingrese unidades del producto: ");
+        scanf("%d", &Stock);
+        fflush(stdin);
+
+        fseek(monitores, 0, SEEK_SET);
+
+        while (fread(&monitorIngresado, sizeof(struct monitor), 1, monitores))
+        {
+            if (monitorIngresado.identificador == 0)
+            {
+                fseek(monitores, -sizeof(struct monitor), SEEK_CUR);
+                monitorIngresado.identificador = ID;
+                strcpy(monitorIngresado.marca, Marca);
+                strcpy(monitorIngresado.modelo, Modelo);
+                strcpy(monitorIngresado.tamano, Tamano);
+                monitorIngresado.stock = Stock;
+                fwrite(&monitorIngresado, sizeof(struct monitor), 1, monitores);
+                encontrado = 1;
+                break;
+            }
+            if (strcasecmp(Marca, monitorIngresado.marca) == 0 &&
+                strcasecmp(Modelo, monitorIngresado.modelo) == 0 &&
+                strcasecmp(Tamano, monitorIngresado.tamano) == 0)
+            {
+                fseek(monitores, -sizeof(struct monitor), SEEK_CUR);
+                strcpy(monitorIngresado.marca, Marca);
+                strcpy(monitorIngresado.modelo, Modelo);
+                strcpy(monitorIngresado.tamano, Tamano);
+                monitorIngresado.stock += Stock;
+                fwrite(&monitorIngresado, sizeof(struct monitor), 1, monitores);
+                encontrado = 1;
+                break;
+            }
+        }
+        if (encontrado == 0)
+        {
+            fseek(monitores, 0, SEEK_END);
+            monitorIngresado.identificador = ID;
+            strcpy(monitorIngresado.marca, Marca);
+            strcpy(monitorIngresado.modelo, Modelo);
+            strcpy(monitorIngresado.tamano, Tamano);
+            monitorIngresado.stock = Stock;
+            fwrite(&monitorIngresado, sizeof(struct monitor), 1, monitores);
+        }
+        fclose(monitores);
+
+        system("cls");
+        imprimirUsuario();
+        printf("\n--- Monitor registrado exitosamente ---\n");
+        do
+        {
+            printf("Agregar otro monitor\n"
+                   "1. Si\n"
+                   "2. No\n"
+                   "Seleccione una opcion: ");
+            scanf("%d", &opcion);
+            if (opcion < 1 || opcion > 2)
+            {
+                system("cls");
+                imprimirUsuario();
+                printf("\nLa opcion seleccionada no es correcta.\n");
+            }
+        } while (opcion < 1 || opcion > 2);
+        if (opcion == 1)
+        {
+            system("cls");
+            imprimirUsuario();
+            agregarMonitor();
+        }
+        else
+            system("cls");
+    }
+}
+void agregarNotebook() // ID (Random), marca[16], modelo[16], procesador[16], RAM[16], pantalla[5], stock.
+{
+    FILE *notebooks;
+    struct notebook notebookIngresado;
+    int ID, encontrado, opcion, Stock;
+    char Marca[16], Modelo[16], Procesador[16], RAM[16], Pantalla[5];
+
+    notebooks = fopen("notebooks.txt", "r+");
+
+    if (notebooks == NULL)
+    {
+        system("cls");
+        printf("El archivo de texto no ha sido creado.\n");
+    }
+    else
+    {
+        do
+        {
+            encontrado = 0;
+            ID = 100000 + rand() % 900000;
+            fseek(notebooks, 0, SEEK_SET);
+            while (fread(&notebookIngresado, sizeof(struct notebook), 1, notebooks))
+            {
+                if (ID == notebookIngresado.identificador)
+                {
+                    encontrado = 1;
+                    break;
+                }
+            }
+        } while (encontrado != 0);
+
+        printf("\n----------------------- Agregar Notebook ------------------------\n");
+        printf("Ingrese la marca del notebook: ");
+        scanf("%s", Marca);
+        fflush(stdin);
+        printf("Ingrese el modelo del notebook: ");
+        scanf("%s", Modelo);
+        fflush(stdin);
+        printf("Ingrese el procesador del notebook: ");
+        scanf("%s", Procesador);
+        fflush(stdin);
+        printf("Ingrese la RAM del notebook: ");
+        scanf("%s", RAM);
+        fflush(stdin);
+        printf("Ingrese la pantalla del notebook: ");
+        scanf("%s", Pantalla);
+        fflush(stdin);
+        printf("Ingrese unidades del producto: ");
+        scanf("%d", &Stock);
+        fflush(stdin);
+
+        fseek(notebooks, 0, SEEK_SET);
+
+        while (fread(&notebookIngresado, sizeof(struct notebook), 1, notebooks))
+        {
+            if (notebookIngresado.identificador == 0)
+            {
+                fseek(notebooks, -sizeof(struct notebook), SEEK_CUR);
+                notebookIngresado.identificador = ID;
+                strcpy(notebookIngresado.marca, Marca);
+                strcpy(notebookIngresado.modelo, Modelo);
+                strcpy(notebookIngresado.procesador, Procesador);
+                strcpy(notebookIngresado.ram, RAM);
+                strcpy(notebookIngresado.pantalla, Pantalla);
+                notebookIngresado.stock = Stock;
+                fwrite(&notebookIngresado, sizeof(struct notebook), 1, notebooks);
+                encontrado = 1;
+                break;
+            }
+            if (strcasecmp(Marca, notebookIngresado.marca) == 0 &&
+                strcasecmp(Modelo, notebookIngresado.modelo) == 0 &&
+                strcasecmp(Procesador, notebookIngresado.procesador) == 0 &&
+                strcasecmp(RAM, notebookIngresado.ram) == 0 &&
+                strcasecmp(Pantalla, notebookIngresado.pantalla) == 0)
+            {
+                fseek(notebooks, -sizeof(struct notebook), SEEK_CUR);
+                strcpy(notebookIngresado.marca, Marca);
+                strcpy(notebookIngresado.modelo, Modelo);
+                strcpy(notebookIngresado.procesador, Procesador);
+                strcpy(notebookIngresado.ram, RAM);
+                strcpy(notebookIngresado.pantalla, Pantalla);
+                notebookIngresado.stock += Stock;
+                fwrite(&notebookIngresado, sizeof(struct notebook), 1, notebooks);
+                encontrado = 1;
+                break;
+            }
+        }
+        if (encontrado == 0)
+        {
+            fseek(notebooks, 0, SEEK_END);
+            notebookIngresado.identificador = ID;
+            strcpy(notebookIngresado.marca, Marca);
+            strcpy(notebookIngresado.modelo, Modelo);
+            strcpy(notebookIngresado.procesador, Procesador);
+            strcpy(notebookIngresado.ram, RAM);
+            strcpy(notebookIngresado.pantalla, Pantalla);
+            notebookIngresado.stock = Stock;
+            fwrite(&notebookIngresado, sizeof(struct notebook), 1, notebooks);
+        }
+        fclose(notebooks);
+
+        system("cls");
+        imprimirUsuario();
+        printf("\n--- Notebook agregado exitosamente ---\n");
+        do
+        {
+            printf("Agregar otro notebook\n"
+                   "1. Si\n"
+                   "2. No\n"
+                   "Seleccione una opcion: ");
+            scanf("%d", &opcion);
+            if (opcion < 1 || opcion > 2)
+            {
+                system("cls");
+                imprimirUsuario();
+                printf("\nLa opcion seleccionada no es correcta.\n");
+            }
+        } while (opcion < 1 || opcion > 2);
+        if (opcion == 1)
+        {
+            system("cls");
+            imprimirUsuario();
+            agregarNotebook();
+        }
+        else
+            system("cls");
+    }
+}
+void agregarPC()
+{
+    int ID, StockPC, encontrado, opcion, TecladoID, MouseID, MonitorID;
+    char Marca[16], Modelo[16], Procesador[16], RAM[16], MarcaTeclado[16], ModeloTeclado[16], IdiomaTeclado[11], MarcaMouse[16], ModeloMouse[16], MarcaMonitor[16], ModeloMonitor[16], TamanoMonitor[5];
+
+    FILE *pcs;
+    struct PC pcIngresado;
+    pcs = fopen("pcs.txt", "r+");
+
+    if (pcs == NULL)
+    {
+        system("cls");
+        printf("El archivo de texto no ha sido creado.\n");
+    }
+    else
+    {
+        do
+        {
+            encontrado = 0;
+            ID = 100000 + rand() % 900000;
+            TecladoID = 100000 + rand() % 900000;
+            MouseID = 100000 + rand() % 900000;
+            MonitorID = 100000 + rand() % 900000;
+            fseek(pcs, 0, SEEK_SET);
+            while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
+            {
+                if (ID == pcIngresado.identificador ||
+                    TecladoID == pcIngresado.tecladoPC.identificador ||
+                    MouseID == pcIngresado.mousePC.identificador ||
+                    MonitorID == pcIngresado.monitorPC.identificador)
+                {
+                    encontrado = 1;
+                    break;
+                }
+            }
+        } while (encontrado != 0);
+
+        printf("\n----------------------- Agregar PC ------------------------\n");
+        printf("Ingrese la marca de la PC: ");
+        scanf("%s", Marca);
+        fflush(stdin);
+        printf("Ingrese el modelo de la PC: ");
+        scanf("%s", Modelo);
+        fflush(stdin);
+        printf("Ingrese el procesador de la PC: ");
+        scanf("%s", Procesador);
+        fflush(stdin);
+        printf("Ingrese la RAM de la PC: ");
+        scanf("%s", RAM);
+        fflush(stdin);
+        printf("Ingrese el stock de la PC: ");
+        scanf("%d", &StockPC);
+        fflush(stdin);
+        printf("\n--------------------- Agregar Teclado PC ----------------------\n");
+        printf("Ingrese la marca del teclado: ");
+        scanf("%s", MarcaTeclado);
+        fflush(stdin);
+        printf("Ingrese el modelo del teclado: ");
+        scanf("%s", ModeloTeclado);
+        fflush(stdin);
+        printf("Ingrese el idioma del teclado: ");
+        scanf("%s", IdiomaTeclado);
+        fflush(stdin);
+        printf("\n--------------------- Agregar Mouse PC ----------------------\n");
+        printf("Ingrese la marca del mouse: ");
+        scanf("%s", MarcaMouse);
+        fflush(stdin);
+        printf("Ingrese el modelo del mouse: ");
+        scanf("%s", ModeloMouse);
+        fflush(stdin);
+        printf("\n--------------------- Agregar Monitor PC ----------------------\n");
+        printf("Ingrese la marca del monitor: ");
+        scanf("%s", MarcaMonitor);
+        fflush(stdin);
+        printf("Ingrese el modelo del monitor: ");
+        scanf("%s", ModeloMonitor);
+        fflush(stdin);
+        printf("Ingrese el tamaño del monitor: ");
+        scanf("%s", TamanoMonitor);
+        fflush(stdin);
+
+        fseek(pcs, 0, SEEK_SET);
+
+        while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
+        {
+            if (pcIngresado.identificador == 0)
+            {
+                fseek(pcs, -sizeof(struct PC), SEEK_CUR);
+
+                // Asignaciones del PC
+                pcIngresado.identificador = ID;
+                strcpy(pcIngresado.marca, Marca);
+                strcpy(pcIngresado.modelo, Modelo);
+                strcpy(pcIngresado.procesador, Procesador);
+                strcpy(pcIngresado.ram, RAM);
+                pcIngresado.stock = StockPC;
+
+                // Asignaciones del Teclado
+                pcIngresado.tecladoPC.identificador = TecladoID;
+                strcpy(pcIngresado.tecladoPC.marca, MarcaTeclado);
+                strcpy(pcIngresado.tecladoPC.modelo, ModeloTeclado);
+                strcpy(pcIngresado.tecladoPC.idioma, IdiomaTeclado);
+                pcIngresado.tecladoPC.stock = 1;
+
+                // Asignaciones del Mouse
+                pcIngresado.mousePC.identificador = MouseID;
+                strcpy(pcIngresado.mousePC.marca, MarcaMouse);
+                strcpy(pcIngresado.mousePC.modelo, ModeloMouse);
+                pcIngresado.mousePC.stock = 1;
+
+                // Asignaciones del Monitor
+                pcIngresado.monitorPC.identificador = MonitorID;
+                strcpy(pcIngresado.monitorPC.marca, MarcaMonitor);
+                strcpy(pcIngresado.monitorPC.modelo, ModeloMonitor);
+                strcpy(pcIngresado.monitorPC.tamano, TamanoMonitor);
+                pcIngresado.monitorPC.stock = 1;
+
+                // Escritura en el archivo
+                fwrite(&pcIngresado, sizeof(struct PC), 1, pcs);
+                break;
+            }
+            if (strcasecmp(pcIngresado.marca, Marca) == 0 &&
+                strcasecmp(pcIngresado.modelo, Modelo) == 0 &&
+                strcasecmp(pcIngresado.procesador, Procesador) == 0 &&
+                strcasecmp(pcIngresado.ram, RAM) == 0)
+            {
+                fseek(pcs, -sizeof(struct PC), SEEK_CUR);
+                pcIngresado.stock += StockPC;
+                fwrite(&pcIngresado, sizeof(struct PC), 1, pcs);
+                break;
+            }
+        }
+        if (encontrado == 0)
+        {
+            fseek(pcs, 0, SEEK_END);
+
+            // Asignaciones del PC
+            pcIngresado.identificador = ID;
+            strcpy(pcIngresado.marca, Marca);
+            strcpy(pcIngresado.modelo, Modelo);
+            strcpy(pcIngresado.procesador, Procesador);
+            strcpy(pcIngresado.ram, RAM);
+            pcIngresado.stock = StockPC;
+
+            // Asignaciones del Teclado
+            pcIngresado.tecladoPC.identificador = TecladoID;
+            strcpy(pcIngresado.tecladoPC.marca, MarcaTeclado);
+            strcpy(pcIngresado.tecladoPC.modelo, ModeloTeclado);
+            strcpy(pcIngresado.tecladoPC.idioma, IdiomaTeclado);
+            pcIngresado.tecladoPC.stock = 1;
+
+            // Asignaciones del Mouse
+            pcIngresado.mousePC.identificador = MouseID;
+            strcpy(pcIngresado.mousePC.marca, MarcaMouse);
+            strcpy(pcIngresado.mousePC.modelo, ModeloMouse);
+            pcIngresado.mousePC.stock = 1;
+
+            // Asignaciones del Monitor
+            pcIngresado.monitorPC.identificador = MonitorID;
+            strcpy(pcIngresado.monitorPC.marca, MarcaMonitor);
+            strcpy(pcIngresado.monitorPC.modelo, ModeloMonitor);
+            strcpy(pcIngresado.monitorPC.tamano, TamanoMonitor);
+            pcIngresado.monitorPC.stock = 1;
+
+            // Escritura en el archivo
+            fwrite(&pcIngresado, sizeof(struct PC), 1, pcs);
+        }
+        fclose(pcs);
+
+        system("cls");
+        imprimirUsuario();
+        printf("\n--- PC agregado exitosamente ---\n");
+        do
+        {
+            printf("Agregar otro PC\n"
+                   "1. Si\n"
+                   "2. No\n"
+                   "Seleccione una opcion: ");
+            scanf("%d", &opcion);
+            if (opcion == 1)
+            {
+                system("cls");
+                imprimirUsuario();
+                agregarPC();
+            }
+            else
+                system("cls");
+        } while(opcion < 1 || opcion > 2);
+    }
+}
 // Funciones listar producto
 void listarTeclado()
 {
@@ -607,17 +1149,102 @@ void listarTeclado()
         printf("\nSin existencias.\n");
     else
     {
-        printf("\n ----------------------------- Teclados --------------------------\n"
-               "| - ID - | - Marca -  |    - Modelo -   | - Idioma - | - Stock -  |\n");
+        printf("\n ------------------------------- Teclados -----------------------------\n"
+               "| - ID - |    - Marca -    |   - Modelo -    | - Idioma - | - Stock -  |\n");
         while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
         {
             if (tecladoIngresado.identificador != 0)
-                printf("| %-6d | %-10s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
+                printf("| %-6d | %-15s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
         }
-        printf(" -----------------------------------------------------------------\n");
+        printf(" ----------------------------------------------------------------------\n");
     }
     fclose(teclados);
 }
+void listarMouse()
+{
+    FILE *mouses;
+    struct mouse mouseIngresado;
+
+    mouses = fopen("mouses.txt", "r");
+    if (mouses == NULL)
+        printf("\nSin existencias.\n");
+    else
+    {
+        printf("\n -------------------------- Mouses -----------------------\n"
+               "| - ID - |    - Marca -    |    - Modelo -   | - Stock -  |\n");
+        while (fread(&mouseIngresado, sizeof(struct mouse), 1, mouses))
+        {
+            if (mouseIngresado.identificador != 0)
+                printf("| %-6d | %-15s | %-15s | %-10d |\n", mouseIngresado.identificador, mouseIngresado.marca, mouseIngresado.modelo, mouseIngresado.stock);
+        }
+        printf(" ---------------------------------------------------------\n");
+    }
+    fclose(mouses);
+}
+void listarMonitor()
+{
+    FILE *monitores;
+    struct monitor monitorIngresado;
+
+    monitores = fopen("monitores.txt", "r");
+    if (monitores == NULL)
+        printf("\nSin existencias.\n");
+    else
+    {
+        printf("\n -------------------------------- Monitores -----------------------------\n"
+               "| - ID - |    - Marca -    |    - Modelo -   | - Pantalla - | - Stock -  |\n");
+        while (fread(&monitorIngresado, sizeof(struct monitor), 1, monitores))
+        {
+            if (monitorIngresado.identificador != 0)
+                printf("| %-6d | %-15s | %-15s | %+11s\" | %-10d |\n", monitorIngresado.identificador, monitorIngresado.marca, monitorIngresado.modelo, monitorIngresado.tamano, monitorIngresado.stock);
+        }
+        printf(" ------------------------------------------------------------------------\n");
+    }
+    fclose(monitores);
+}
+void listarNotebook()
+{
+    FILE *notebooks;
+    struct notebook notebookIngresado;
+
+    notebooks = fopen("notebooks.txt", "r");
+    if (notebooks == NULL)
+        printf("\nSin existencias.\n");
+    else
+    {
+        printf("\n -------------------------------------------------- Notebooks -----------------------------------------------\n"
+               "| - ID - |    - Marca -    |    - Modelo -   |  - Procesador - |     - RAM -     | - Pantalla - | - Stock -  |\n");
+        while (fread(&notebookIngresado, sizeof(struct notebook), 1, notebooks))
+        {
+            if (notebookIngresado.identificador != 0)
+                printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %+11s\" | %-10d |\n", notebookIngresado.identificador, notebookIngresado.marca, notebookIngresado.modelo, notebookIngresado.procesador, notebookIngresado.ram, notebookIngresado.pantalla, notebookIngresado.stock);
+        }
+        printf(" ------------------------------------------------------------------------------------------------------------\n");
+    }
+    fclose(notebooks);
+}
+void listarPC()
+{
+    FILE *pcs;
+    struct PC pcIngresado;
+
+    pcs = fopen("pcs.txt", "r");
+    if (pcs == NULL)
+        printf("\nSin existencias.\n");
+    else
+    {
+        printf("\n ----------------------------- PCs --------------------------\n"
+               "| - ID - | - Marca -  |    - Modelo -   | - Tamaño - | - Stock -  |\n");
+        while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
+        {
+            if (pcIngresado.identificador != 0)
+                printf("| %-6d | %-15s | %-15s | %-10s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.monitorPC.tamano, pcIngresado.monitorPC.stock);
+        }
+        printf(" -----------------------------------------------------------------\n");
+    }
+    fclose(pcs);
+}
+
 // Funciones actualizar producto
 void actualizarTeclado()
 {
