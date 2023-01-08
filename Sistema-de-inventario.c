@@ -69,6 +69,7 @@ struct LOGIN asignacionCuenta();
 // Funciones principales
 int loginUsuario(int intentos);
 void imprimirUsuario();
+void mensajeError();
 void menu();
 
 // Funciones menu
@@ -129,14 +130,19 @@ int main()
     if (ingreso == 0)
     {
         system("cls");
-        printf("Bienvenido ");
+        printf("\t   Bienvenido\n");
         while (1)
             menu();
     }
     else
     {
         system("cls");
-        printf("Has llegado al limite de intentos.\nEl programa finalizara.\n");
+        printf("*---------------------------------------------*\n"
+               "|                    ERROR                    |\n"
+               "|---------------------------------------------|\n"
+               "| Has llegado al maximo de intentos posibles, |\n"
+               "|            el programa finalizara           |\n"
+               "*---------------------------------------------*\n");
     }
     return 0;
 }
@@ -159,11 +165,20 @@ int loginUsuario(int intentos)
     char passwordIngresada[10 + 1];
     char letra;
 
-    printf("----- Login -----\n");
-    printf("Usuario: ");
+    printf("*---------------------------------------------*\n"
+           "|                                             |\n"
+           "|            Sistema de Inventario            |\n"
+           "|                                             |\n"
+           "*---------------------------------------------*\n"
+           "|          Ingrese nombre de usuario          |\n"
+           "*---------------------------------------------*\n"
+           " Usuario: ");
     gets(usernameIngresado);
-    printf("Contrasena: ");
-
+    fflush(stdin);
+    printf("*---------------------------------------------*\n"
+           "|              Ingrese contrasena             |\n"
+           "*---------------------------------------------*\n"
+           " Contrasena: ");
     while (1)
     {
         letra = getch();
@@ -201,15 +216,43 @@ int loginUsuario(int intentos)
         else
         {
             system("cls");
-            printf("Nombre de usuario y/o contrasena incorrecta.\n");
-            printf("Intentos restantes: %d\n", intentos);
+            printf("*---------------------------------------------*\n"
+                   "|                    ERROR                    |\n"
+                   "|---------------------------------------------|\n"
+                   "| Nombre de usuario y/o contrasena incorrecta |\n"
+                   "*---------------------------------------------*\n"
+                   "|            Intentos restantes: %d            |\n"
+                   "*---------------------------------------------*\n",
+                   intentos);
+            printf(" Presione cualquier tecla para reintentar...");
+            getch();
+            fflush(stdin);
+            system("cls");
             return loginUsuario(intentos);
         }
     }
 }
 void imprimirUsuario()
 {
-    printf("%s %s %s", cuentaSistema.nombres, cuentaSistema.apellidoP, cuentaSistema.apellidoM);
+    printf("*-------------------------------*\n"
+           "| %s %s %s |\n"
+           "*-------------------------------*",
+           cuentaSistema.nombres, cuentaSistema.apellidoP, cuentaSistema.apellidoM);
+}
+void mensajeError()
+{
+    system("cls");
+    imprimirUsuario();
+    printf("\n"
+           "*--------------------------------------*\n"
+           "|                 ERROR                |\n"
+           "*--------------------------------------*\n"
+           "|   La opcion ingresada no es valida   |\n"
+           "*--------------------------------------*\n");
+    printf("Presione cualquier tecla para continuar...");
+    getch();
+    fflush(stdin);
+    system("cls");
 }
 void menu()
 {
@@ -217,21 +260,27 @@ void menu()
     do
     {
         imprimirUsuario();
-        printf("\n--------- Menu ---------"
-               "\n1. Agregar producto"
-               "\n2. Listar producto"
-               "\n3. Actualizar producto"
-               "\n4. Eliminar producto"
-               "\n5. Busqueda por marca"
-               "\n6. Finalizar programa"
-               "\nSeleccione una opcion: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|                  MENU                |\n"
+               "|--------------------------------------|\n"
+               "| 1. Agregar producto                  |\n"
+               "|--------------------------------------|\n"
+               "| 2. Listar producto                   |\n"
+               "|--------------------------------------|\n"
+               "| 3. Actualizar producto               |\n"
+               "|--------------------------------------|\n"
+               "| 4. Eliminar producto                 |\n"
+               "|--------------------------------------|\n"
+               "| 5. Busqueda por marca                |\n"
+               "|--------------------------------------|\n"
+               "| 6. Finalizar programa                |\n"
+               "*--------------------------------------*\n"
+               "Seleccione una opcion: ");
         scanf("%d", &opcion);
         fflush(stdin);
         if (opcion < 1 || opcion > 6)
-        {
-            system("cls");
-            printf("La opcion ingresada no es correcta.\n");
-        }
+            mensajeError();
     } while (opcion < 1 || opcion > 6);
 
     switch (opcion)
@@ -255,10 +304,14 @@ void menu()
         system("cls");
         break;
     case 6:
-        printf("------- Fin del programa -------\n");
+        system("cls");
+        printf("*--------------------------------------*\n"
+               "|             HASTA PRONTO             |\n"
+               "*--------------------------------------*\n");
         exit(0);
     }
 }
+
 // Funciones principales
 void agregarProducto()
 {
@@ -267,21 +320,27 @@ void agregarProducto()
     do
     {
         imprimirUsuario();
-        printf("\n----- Agregar producto -----"
-               "\n1. Teclado"
-               "\n2. Mouse"
-               "\n3. Monitor"
-               "\n4. Notebook"
-               "\n5. PC"
-               "\n6. Volver al menu principal"
-               "\nSeleccione una opcion: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|            AGREGAR PRODUCTO          |\n"
+               "|--------------------------------------|\n"
+               "| 1. Teclado                           |\n"
+               "|--------------------------------------|\n"
+               "| 2. Mouse                             |\n"
+               "|--------------------------------------|\n"
+               "| 3. Monitor                           |\n"
+               "|--------------------------------------|\n"
+               "| 4. Notebook                          |\n"
+               "|--------------------------------------|\n"
+               "| 5. PC                                |\n"
+               "|--------------------------------------|\n"
+               "| 6. Regresar al menu                  |\n"
+               "*--------------------------------------*\n"
+               "Seleccione una opcion: ");
         scanf("%d", &opcion);
         fflush(stdin);
         if (opcion < 1 || opcion > 6)
-        {
-            system("cls");
-            printf("La opcion ingresada no es correcta.\n");
-        }
+            mensajeError();
     } while (opcion < 1 || opcion > 6);
 
     switch (opcion)
@@ -329,21 +388,27 @@ void listarProducto()
     do
     {
         imprimirUsuario();
-        printf("\n----- Listar producto -----"
-               "\n1. Teclado"
-               "\n2. Mouse"
-               "\n3. Monitor"
-               "\n4. Notebook"
-               "\n5. PC"
-               "\n6. Volver al menu principal"
-               "\nSeleccione una opcion: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|            LISTAR PRODUCTO           |\n"
+               "|--------------------------------------|\n"
+               "| 1. Teclado                           |\n"
+               "|--------------------------------------|\n"
+               "| 2. Mouse                             |\n"
+               "|--------------------------------------|\n"
+               "| 3. Monitor                           |\n"
+               "|--------------------------------------|\n"
+               "| 4. Notebook                          |\n"
+               "|--------------------------------------|\n"
+               "| 5. PC                                |\n"
+               "|--------------------------------------|\n"
+               "| 6. Regresar al menu                  |\n"
+               "*--------------------------------------*\n"
+               "Seleccione una opcion: ");
         scanf("%d", &opcion);
         fflush(stdin);
         if (opcion < 1 || opcion > 6)
-        {
-            system("cls");
-            printf("La opcion ingresada no es correcta.\n");
-        }
+            mensajeError();
     } while (opcion < 1 || opcion > 6);
 
     switch (opcion)
@@ -382,10 +447,7 @@ void listarProducto()
         break;
     case 5:
         system("cls");
-        imprimirUsuario();
         listarPC();
-        printf("Presione cualquier tecla para volver al menu principal...");
-        getch();
         system("cls");
         break;
     case 6:
@@ -401,21 +463,27 @@ void actualizarProducto()
     do
     {
         imprimirUsuario();
-        printf("\n----- Actualizar producto -----"
-               "\n1. Teclado"
-               "\n2. Mouse"
-               "\n3. Monitor"
-               "\n4. Notebook"
-               "\n5. PC"
-               "\n6. Volver al menu principal"
-               "\nSeleccione una opcion: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|          ACTUALIZAR PRODUCTO         |\n"
+               "|--------------------------------------|\n"
+               "| 1. Teclado                           |\n"
+               "|--------------------------------------|\n"
+               "| 2. Mouse                             |\n"
+               "|--------------------------------------|\n"
+               "| 3. Monitor                           |\n"
+               "|--------------------------------------|\n"
+               "| 4. Notebook                          |\n"
+               "|--------------------------------------|\n"
+               "| 5. PC                                |\n"
+               "|--------------------------------------|\n"
+               "| 6. Regresar al menu                  |\n"
+               "*--------------------------------------*\n"
+               "Seleccione una opcion: ");
         scanf("%d", &opcion);
         fflush(stdin);
         if (opcion < 1 || opcion > 6)
-        {
-            system("cls");
-            printf("La opcion ingresada no es correcta.\n");
-        }
+            mensajeError();
     } while (opcion < 1 || opcion > 6);
 
     switch (opcion)
@@ -463,21 +531,27 @@ void eliminarProducto()
     do
     {
         imprimirUsuario();
-        printf("\n----- Eliminar producto -----"
-               "\n1. Teclado"
-               "\n2. Mouse"
-               "\n3. Monitor"
-               "\n4. Notebook"
-               "\n5. PC"
-               "\n6. Volver al menu principal"
-               "\nSeleccione una opcion: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|          ELIMINAR PRODUCTO           |\n"
+               "|--------------------------------------|\n"
+               "| 1. Teclado                           |\n"
+               "|--------------------------------------|\n"
+               "| 2. Mouse                             |\n"
+               "|--------------------------------------|\n"
+               "| 3. Monitor                           |\n"
+               "|--------------------------------------|\n"
+               "| 4. Notebook                          |\n"
+               "|--------------------------------------|\n"
+               "| 5. PC                                |\n"
+               "|--------------------------------------|\n"
+               "| 6. Regresar al menu                  |\n"
+               "*--------------------------------------*\n"
+               "Seleccione una opcion: ");
         scanf("%d", &opcion);
         fflush(stdin);
         if (opcion < 1 || opcion > 6)
-        {
-            system("cls");
-            printf("La opcion ingresada no es correcta.\n");
-        }
+            mensajeError();
     } while (opcion < 1 || opcion > 6);
 
     switch (opcion)
@@ -528,12 +602,22 @@ void busqueda()
     notebooks = fopen("notebooks.txt", "r");
     pcs = fopen("pcs.txt", "r");
 
-    printf("\n----------------------- Busqueda de productos -----------------------\n");
-    printf("Ingrese la marca del producto: ");
+    printf("\n"
+           "*-------------------------------*\n"
+           "|      BUSQUEDA DE PRODUCTO     |\n"
+           "*-------------------------------*\n");
+    printf(" Ingrese la marca: ");
     gets(marcaBuscada);
     fflush(stdin);
-    printf(" ---------------------- Productos encontrados -----------------------\n"
-           "| - Tipo - | - ID - |    - Marca -    |    - Modelo -   | - Stock -  |\n");
+    system("cls");
+    imprimirUsuario();
+    printf("\n"
+           "*--------------------------------------------------------------------*\n"
+           "|                   Resultados de la busqueda: %-15s       |\n"
+           "*--------------------------------------------------------------------*\n"
+           "|   Tipo   |   ID   |      Marca      |      Modelo     |   Stock    |\n"
+           "*--------------------------------------------------------------------*\n",
+           marcaBuscada);
 
     while (fread(&tecladoBuscado, sizeof(struct teclado), 1, teclados))
     {
@@ -556,11 +640,11 @@ void busqueda()
             printf("| Notebook | %-6d | %-15s | %-15s | %-10d |\n", notebookBuscado.identificador, notebookBuscado.marca, notebookBuscado.modelo, notebookBuscado.stock);
     }
     while (fread(&pcBuscado, sizeof(struct PC), 1, pcs))
-    
+
         if (strcasecmp(pcBuscado.marca, marcaBuscada) == 0)
             printf("| PC       | %-6d | %-15s | %-15s | %-10d |\n", pcBuscado.identificador, pcBuscado.marca, pcBuscado.modelo, pcBuscado.stock);
-    
-    printf(" --------------------------------------------------------------------\n");
+
+    printf("*--------------------------------------------------------------------*\n");
     fclose(teclados);
     fclose(mouses);
     fclose(monitores);
@@ -602,22 +686,35 @@ void agregarTeclado() // ID (Random), marca[16], modelo[16], idioma[10], stock.
                 }
         } while (encontrado != 0);
 
-        printf("\n------------------------- Agregar Teclado -------------------------\n");
-        printf("Ingrese marca del teclado: ");
         fflush(stdin);
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|            AGREGAR TECLADO           |\n"
+               "|--------------------------------------|\n"
+               "|       Ingrese marca del teclado      |\n"
+               "*--------------------------------------*\n"
+               " Marca: ");
         gets(Marca);
         fflush(stdin);
-        printf("Ingrese modelo del teclado: ");
+        printf("*--------------------------------------*\n"
+               "|       Ingrese modelo del teclado     |\n"
+               "*--------------------------------------*\n"
+               " Modelo: ");
         gets(Modelo);
         fflush(stdin);
-        printf("Ingrese idioma del teclado: ");
+        printf("*--------------------------------------*\n"
+               "|       Ingrese idioma del teclado     |\n"
+               "*--------------------------------------*\n"
+               " Idioma: ");
         gets(Idioma);
         fflush(stdin);
-        printf("Ingrese unidades del producto: ");
+        printf("*--------------------------------------*\n"
+               "|       Ingrese stock del teclado      |\n"
+               "*--------------------------------------*\n"
+               " Stock: ");
         scanf("%d", &Stock);
         fflush(stdin);
 
-        encontrado = 0;
         fseek(teclados, 0, SEEK_SET);
         // Lectura del archivo para verificar si el producto ya existe.
         while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
@@ -666,23 +763,25 @@ void agregarTeclado() // ID (Random), marca[16], modelo[16], idioma[10], stock.
         fclose(teclados);
 
         system("cls");
-        imprimirUsuario();
-        printf("\n--- Teclado registrado exitosamente ---\n");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|    TECLADO REGISTRADO EXITOSAMENTE   |\n"
+               "*--------------------------------------*\n");
         do
         {
-            printf("Agregar otro teclado\n"
-                   "1. Si\n"
-                   "2. No\n"
+            imprimirUsuario();
+            printf("\n"
+                   "*--------------------------------------*\n"
+                   "| 1. Agregar otro teclado              |\n"
+                   "| 2. Volver al menu principal          |\n"
+                   "*--------------------------------------*\n"
                    "Seleccione una opcion: ");
             scanf("%d", &opcion);
             fflush(stdin);
             if (opcion < 1 || opcion > 2)
-            {
-                system("cls");
-                imprimirUsuario();
-                printf("\nLa opcion seleccionada no es correcta.\n");
-            }
+                mensajeError();
         } while (opcion < 1 || opcion > 2);
+
         if (opcion == 1)
         {
             system("cls");
@@ -722,15 +821,26 @@ void agregarMouse() // ID (Random), marca[16], modelo[16], stock.
             }
         } while (encontrado != 0);
 
-        printf("\n------------------------- Agregar Mouse -------------------------\n");
-        printf("Ingrese la marca del mouse: ");
         fflush(stdin);
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|             AGREGAR MOUSE            |\n"
+               "|--------------------------------------|\n"
+               "|        Ingrese marca del mouse       |\n"
+               "*--------------------------------------*\n"
+               " Marca: ");
         gets(Marca);
         fflush(stdin);
-        printf("Ingrese el modelo del mouse: ");
+        printf("*--------------------------------------*\n"
+               "|        Ingrese modelo del mouse      |\n"
+               "*--------------------------------------*\n"
+               " Modelo: ");
         gets(Modelo);
         fflush(stdin);
-        printf("Ingrese unidades del producto: ");
+        printf("*--------------------------------------*\n"
+               "|        Ingrese stock del mouse       |\n"
+               "*--------------------------------------*\n"
+               " Stock: ");
         scanf("%d", &Stock);
         fflush(stdin);
 
@@ -773,23 +883,25 @@ void agregarMouse() // ID (Random), marca[16], modelo[16], stock.
         fclose(mouses);
 
         system("cls");
-        imprimirUsuario();
-        printf("\n--- Mouse registrado exitosamente ---\n");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|     MOUSE REGISTRADO EXITOSAMENTE    |\n"
+               "*--------------------------------------*\n");
         do
         {
-            printf("Agregar otro mouse\n"
-                   "1. Si\n"
-                   "2. No\n"
+            imprimirUsuario();
+            printf("\n"
+                   "*--------------------------------------*\n"
+                   "| 1. Agregar otro mouse                |\n"
+                   "| 2. Volver al menu principal          |\n"
+                   "*--------------------------------------*\n"
                    "Seleccione una opcion: ");
             scanf("%d", &opcion);
             fflush(stdin);
             if (opcion < 1 || opcion > 2)
-            {
-                system("cls");
-                imprimirUsuario();
-                printf("\nLa opcion seleccionada no es correcta.\n");
-            }
+                mensajeError();
         } while (opcion < 1 || opcion > 2);
+
         if (opcion == 1)
         {
             system("cls");
@@ -829,18 +941,32 @@ void agregarMonitor() // ID (Random), marca[16], modelo[16], tamaño[5], stock.
             }
         } while (encontrado != 0);
 
-        printf("\n------------------------ Agregar Monitor ------------------------\n");
-        printf("Ingrese la marca del monitor: ");
         fflush(stdin);
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|            AGREGAR MONITOR           |\n"
+               "|--------------------------------------|\n"
+               "|        Ingrese marca del monitor     |\n"
+               "*--------------------------------------*\n"
+               " Marca: ");
         gets(Marca);
         fflush(stdin);
-        printf("Ingrese el modelo del monitor: ");
+        printf("*--------------------------------------*\n"
+               "|        Ingrese modelo del monitor    |\n"
+               "*--------------------------------------*\n"
+               " Modelo: ");
         gets(Modelo);
         fflush(stdin);
-        printf("Ingrese el tamano del monitor: ");
+        printf("*--------------------------------------*\n"
+               "|        Ingrese tamaño del monitor    |\n"
+               "*--------------------------------------*\n"
+               " Tamaño: ");
         gets(Tamano);
         fflush(stdin);
-        printf("Ingrese unidades del producto: ");
+        printf("*--------------------------------------*\n"
+               "|        Ingrese stock del monitor     |\n"
+               "*--------------------------------------*\n"
+               " Stock: ");
         scanf("%d", &Stock);
         fflush(stdin);
 
@@ -887,22 +1013,23 @@ void agregarMonitor() // ID (Random), marca[16], modelo[16], tamaño[5], stock.
         fclose(monitores);
 
         system("cls");
-        imprimirUsuario();
-        printf("\n--- Monitor registrado exitosamente ---\n");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|    MONITOR REGISTRADO EXITOSAMENTE   |\n"
+               "*--------------------------------------*\n");
         do
         {
-            printf("Agregar otro monitor\n"
-                   "1. Si\n"
-                   "2. No\n"
+            imprimirUsuario();
+            printf("\n"
+                   "*--------------------------------------*\n"
+                   "| 1. Agregar otro monitor              |\n"
+                   "| 2. Volver al menu principal          |\n"
+                   "*--------------------------------------*\n"
                    "Seleccione una opcion: ");
             scanf("%d", &opcion);
             fflush(stdin);
             if (opcion < 1 || opcion > 2)
-            {
-                system("cls");
-                imprimirUsuario();
-                printf("\nLa opcion seleccionada no es correcta.\n");
-            }
+                mensajeError();
         } while (opcion < 1 || opcion > 2);
         if (opcion == 1)
         {
@@ -943,24 +1070,44 @@ void agregarNotebook() // ID (Random), marca[16], modelo[16], procesador[16], RA
             }
         } while (encontrado != 0);
 
-        printf("\n----------------------- Agregar Notebook ------------------------\n");
-        printf("Ingrese la marca del notebook: ");
         fflush(stdin);
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|           AGREGAR NOTEBOOK           |\n"
+               "|--------------------------------------|\n"
+               "|      Ingrese marca del notebook      |\n"
+               "*--------------------------------------*\n"
+               " Marca: ");
         gets(Marca);
         fflush(stdin);
-        printf("Ingrese el modelo del notebook: ");
+        printf("*--------------------------------------*\n"
+               "|     Ingrese modelo del notebook      |\n"
+               "*--------------------------------------*\n"
+               " Modelo: ");
         gets(Modelo);
         fflush(stdin);
-        printf("Ingrese el procesador del notebook: ");
+        printf("*--------------------------------------*\n"
+               "|   Ingrese procesador del notebook    |\n"
+               "*--------------------------------------*\n"
+               " Procesador: ");
         gets(Procesador);
         fflush(stdin);
-        printf("Ingrese la RAM del notebook: ");
+        printf("*--------------------------------------*\n"
+               "|      Ingrese RAM del notebook        |\n"
+               "*--------------------------------------*\n"
+               " RAM: ");
         gets(RAM);
         fflush(stdin);
-        printf("Ingrese la pantalla del notebook: ");
+        printf("*--------------------------------------*\n"
+               "|     Ingrese pantalla del notebook    |\n"
+               "*--------------------------------------*\n"
+               " Pantalla: ");
         gets(Pantalla);
         fflush(stdin);
-        printf("Ingrese unidades del producto: ");
+        printf("*--------------------------------------*\n"
+               "|      Ingrese stock del notebook      |\n"
+               "*--------------------------------------*\n"
+               " Stock: ");
         scanf("%d", &Stock);
         fflush(stdin);
 
@@ -1015,22 +1162,23 @@ void agregarNotebook() // ID (Random), marca[16], modelo[16], procesador[16], RA
         fclose(notebooks);
 
         system("cls");
-        imprimirUsuario();
-        printf("\n--- Notebook agregado exitosamente ---\n");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|   NOTEBOOK REGISTRADO EXITOSAMENTE   |\n"
+               "*--------------------------------------*\n");
         do
         {
-            printf("Agregar otro notebook\n"
-                   "1. Si\n"
-                   "2. No\n"
-                   "Seleccione una opcion: ");
+            imprimirUsuario();
+            printf("\n"
+                   "*--------------------------------------*\n"
+                   "| 1. Agregar otro notebook             |\n"
+                   "| 2. Volver al menu principal          |\n"
+                   "*--------------------------------------*\n"
+                   " Seleccione una opcion: ");
             scanf("%d", &opcion);
             fflush(stdin);
             if (opcion < 1 || opcion > 2)
-            {
-                system("cls");
-                imprimirUsuario();
-                printf("\nLa opcion seleccionada no es correcta.\n");
-            }
+                mensajeError();
         } while (opcion < 1 || opcion > 2);
         if (opcion == 1)
         {
@@ -1077,48 +1225,110 @@ void agregarPC()
             }
         } while (encontrado != 0);
 
-        printf("\n----------------------- Agregar PC ------------------------\n");
-        printf("Ingrese la marca de la PC: ");
         fflush(stdin);
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|       AGREGAR PC DE ESCRITORIO       |\n"
+               "*--------------------------------------*\n"
+               "|         Ingrese marca del PC         |\n"
+               "*--------------------------------------*\n"
+               " Marca: ");
         gets(Marca);
         fflush(stdin);
-        printf("Ingrese el modelo de la PC: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|         Ingrese modelo del PC        |\n"
+               "*--------------------------------------*\n"
+               " Modelo: ");
         gets(Modelo);
         fflush(stdin);
-        printf("Ingrese el procesador de la PC: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|       Ingrese procesador del PC      |\n"
+               "*--------------------------------------*\n"
+               " Procesador: ");
         gets(Procesador);
         fflush(stdin);
-        printf("Ingrese la RAM de la PC: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|          Ingrese RAM del PC          |\n"
+               "*--------------------------------------*\n"
+               " RAM: ");
         gets(RAM);
         fflush(stdin);
-        printf("Ingrese el stock de la PC: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|        Ingrese stock del PC          |\n"
+               "*--------------------------------------*\n"
+               " Stock: ");
         scanf("%d", &StockPC);
         fflush(stdin);
-        printf("\n--------------------- Agregar Teclado PC ----------------------\n");
-        printf("Ingrese la marca del teclado: ");
+        system("cls");
+
+        imprimirUsuario();
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|          AGREGAR TECLADO PC          |\n"
+               "*--------------------------------------*\n"
+               "|       Ingrese marca del teclado      |\n"
+               "*--------------------------------------*\n"
+               " Marca: ");
         gets(MarcaTeclado);
         fflush(stdin);
-        printf("Ingrese el modelo del teclado: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|       Ingrese modelo del teclado     |\n"
+               "*--------------------------------------*\n"
+               " Modelo: ");
         gets(ModeloTeclado);
         fflush(stdin);
-        printf("Ingrese el idioma del teclado: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|      Ingrese idioma del teclado      |\n"
+               "*--------------------------------------*\n"
+               " Idioma: ");
         gets(IdiomaTeclado);
         fflush(stdin);
-        printf("\n--------------------- Agregar Mouse PC ----------------------\n");
-        printf("Ingrese la marca del mouse: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|           AGREGAR MOUSE PC           |\n"
+               "*--------------------------------------*\n"
+               "|        Ingrese marca del mouse       |\n"
+               "*--------------------------------------*\n"
+               " Marca: ");
         gets(MarcaMouse);
         fflush(stdin);
-        printf("Ingrese el modelo del mouse: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|        Ingrese modelo del mouse      |\n"
+               "*--------------------------------------*\n"
+               " Modelo: ");
         gets(ModeloMouse);
         fflush(stdin);
-        printf("\n--------------------- Agregar Monitor PC ----------------------\n");
-        printf("Ingrese la marca del monitor: ");
+        system("cls");
+
+        imprimirUsuario();
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|          AGREGAR MONITOR PC          |\n"
+               "*--------------------------------------*\n"
+               "|       Ingrese marca del monitor      |\n"
+               "*--------------------------------------*\n"
+               " Marca: ");
         gets(MarcaMonitor);
         fflush(stdin);
-        printf("Ingrese el modelo del monitor: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|       Ingrese modelo del monitor     |\n"
+               "*--------------------------------------*\n"
+               " Modelo: ");
         gets(ModeloMonitor);
         fflush(stdin);
-        printf("Ingrese el tamano del monitor: ");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|       Ingrese tamano del monitor     |\n"
+               "*--------------------------------------*\n"
+               " Tamano: ");
         gets(TamanoMonitor);
         fflush(stdin);
 
@@ -1209,19 +1419,27 @@ void agregarPC()
             fwrite(&pcIngresado, sizeof(struct PC), 1, pcs);
         }
         fclose(pcs);
-
         system("cls");
+
         imprimirUsuario();
-        printf("\n--- PC agregado exitosamente ---\n");
+        printf("\n"
+               "*--------------------------------------*\n"
+               "|      PC REGISTRADO EXISTOSAMENTE     |\n"
+               "*--------------------------------------*\n");
         do
         {
-            printf("Agregar otro PC\n"
-                   "1. Si\n"
-                   "2. No\n"
-                   "Seleccione una opcion: ");
+            printf("\n"
+                   "*--------------------------------------*\n"
+                   "| 1. Registrar otro PC                 |\n"
+                   "| 2. Regresar al menu principal        |\n"
+                   "*--------------------------------------*\n"
+                   " Seleccione una opcion: ");
             scanf("%d", &opcion);
             fflush(stdin);
+            if (opcion < 1 || opcion > 2)
+                mensajeError();
         } while (opcion < 1 || opcion > 2);
+
         if (opcion == 1)
         {
             system("cls");
@@ -1241,14 +1459,18 @@ void listarTeclado()
         printf("\nSin existencias.\n");
     else
     {
-        printf("\n ------------------------------- Teclados -----------------------------\n"
-               "| - ID - |    - Marca -    |   - Modelo -    | - Idioma - | - Stock -  |\n");
+        printf("\n"
+               "*----------------------------------------------------------------------*\n"
+               "|                               TECLADOS                               |\n"
+               "|----------------------------------------------------------------------|\n"
+               "|   ID   |      Marca      |     Modelo      |   Idioma   |   Stock    |\n"
+               "*----------------------------------------------------------------------*\n");
         while (fread(&tecladoIngresado, sizeof(struct teclado), 1, teclados))
         {
             if (tecladoIngresado.identificador != 0)
                 printf("| %-6d | %-15s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
         }
-        printf(" ----------------------------------------------------------------------\n");
+        printf("*----------------------------------------------------------------------*\n");
     }
     fclose(teclados);
 }
@@ -1262,14 +1484,18 @@ void listarMouse()
         printf("\nSin existencias.\n");
     else
     {
-        printf("\n -------------------------- Mouses -----------------------\n"
-               "| - ID - |    - Marca -    |    - Modelo -   | - Stock -  |\n");
+        printf("\n"
+               "*---------------------------------------------------------*\n"
+               "|                         MOUSE                           |\n"
+               "|---------------------------------------------------------|\n"
+               "|   ID   |      Marca      |      Modelo     |   Stock    |\n"
+               "*---------------------------------------------------------*\n");
         while (fread(&mouseIngresado, sizeof(struct mouse), 1, mouses))
         {
             if (mouseIngresado.identificador != 0)
                 printf("| %-6d | %-15s | %-15s | %-10d |\n", mouseIngresado.identificador, mouseIngresado.marca, mouseIngresado.modelo, mouseIngresado.stock);
         }
-        printf(" ---------------------------------------------------------\n");
+        printf("*---------------------------------------------------------*\n");
     }
     fclose(mouses);
 }
@@ -1283,14 +1509,18 @@ void listarMonitor()
         printf("\nSin existencias.\n");
     else
     {
-        printf("\n -------------------------------- Monitores -----------------------------\n"
-               "| - ID - |    - Marca -    |    - Modelo -   | - Pantalla - | - Stock -  |\n");
+        printf("\n"
+               "*------------------------------------------------------------------------*\n"
+               "|                               MONITORES                                |\n"
+               "|------------------------------------------------------------------------|\n"
+               "|   ID   |      Marca      |      Modelo     |   Pantalla   |   Stock    |\n"
+               "*------------------------------------------------------------------------*\n");
         while (fread(&monitorIngresado, sizeof(struct monitor), 1, monitores))
         {
             if (monitorIngresado.identificador != 0)
                 printf("| %-6d | %-15s | %-15s | %+11s\" | %-10d |\n", monitorIngresado.identificador, monitorIngresado.marca, monitorIngresado.modelo, monitorIngresado.tamano, monitorIngresado.stock);
         }
-        printf(" ------------------------------------------------------------------------\n");
+        printf("*------------------------------------------------------------------------*\n");
     }
     fclose(monitores);
 }
@@ -1304,14 +1534,18 @@ void listarNotebook()
         printf("\nSin existencias.\n");
     else
     {
-        printf("\n -------------------------------------------------- Notebooks -----------------------------------------------\n"
-               "| - ID - |    - Marca -    |    - Modelo -   |  - Procesador - |     - RAM -     | - Pantalla - | - Stock -  |\n");
+        printf("\n"
+               "*------------------------------------------------------------------------------------------------------------*\n"
+               "|                                          NOTEBOOKS                                                         |\n"
+               "|------------------------------------------------------------------------------------------------------------|\n"
+               "|   ID   |      Marca      |      Modelo     |    Procesador   |       RAM       |   Pantalla   |   Stock    |\n"
+               "*------------------------------------------------------------------------------------------------------------*\n");
         while (fread(&notebookIngresado, sizeof(struct notebook), 1, notebooks))
         {
             if (notebookIngresado.identificador != 0)
                 printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %+11s\" | %-10d |\n", notebookIngresado.identificador, notebookIngresado.marca, notebookIngresado.modelo, notebookIngresado.procesador, notebookIngresado.ram, notebookIngresado.pantalla, notebookIngresado.stock);
         }
-        printf(" ------------------------------------------------------------------------------------------------------------\n");
+        printf("*------------------------------------------------------------------------------------------------------------*\n");
     }
     fclose(notebooks);
 }
@@ -1319,7 +1553,7 @@ void listarPC()
 {
     FILE *pcs;
     struct PC pcIngresado;
-    int ID, opcion;
+    int ID, opcion, encontrado = 0;
 
     pcs = fopen("pcs.txt", "r");
     if (pcs == NULL)
@@ -1328,58 +1562,103 @@ void listarPC()
     {
         do
         {
-            printf("\n --------------------------------------------- PCs -------------------------------------------\n"
-                   "| - ID - |    - Marca -    |    - Modelo -   |  - Procesador - |     - RAM -     | - Stock -  |\n");
+            fseek(pcs, 0, SEEK_SET);
+            imprimirUsuario();
+            printf("\n"
+                   "*---------------------------------------------------------------------------------------------*\n"
+                   "|                                      PC's DE ESCRITORIO                                     |\n"
+                   "|---------------------------------------------------------------------------------------------|\n"
+                   "|   ID   |      Marca      |      Modelo     |    Procesador   |       RAM       |   Stock    |\n"
+                   "*---------------------------------------------------------------------------------------------*\n");
             while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
             {
                 if (pcIngresado.identificador != 0)
                     printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.procesador, pcIngresado.ram, pcIngresado.stock);
             }
-            printf(" ---------------------------------------------------------------------------------------------\n");
-            printf("\nRevisar perifericos del PC\n"
-                   "1. Si\n"
-                   "2. No\n"
+            printf("*---------------------------------------------------------------------------------------------*\n");
+            printf("*--------------------------------------*\n"
+                   "| 1. Revisar perifericos del PC        |\n"
+                   "| 2. Volver al menu principal          |\n"
+                   "*--------------------------------------*\n"
                    "Seleccione una opcion: ");
             scanf("%d", &opcion);
             fflush(stdin);
             if (opcion < 1 || opcion > 2)
             {
-                system("cls");
-                printf("La opcion seleccionada no es correcta.\n");
-                imprimirUsuario();
+                mensajeError();
             }
         } while (opcion < 1 || opcion > 2);
+
         if (opcion == 1)
         {
-            printf("Ingrese el ID del PC que desea revisar: ");
-            scanf("%d", &ID);
-            fflush(stdin);
-            fseek(pcs, 0, SEEK_SET);
-            while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
+            do
             {
-                if (ID == pcIngresado.identificador)
+                fseek(pcs, 0, SEEK_SET);
+                system("cls");
+                imprimirUsuario();
+                printf("\n"
+                       "*---------------------------------------------------------------------------------------------*\n"
+                       "|                                      PC's DE ESCRITORIO                                     |\n"
+                       "|---------------------------------------------------------------------------------------------|\n"
+                       "|   ID   |      Marca      |      Modelo     |    Procesador   |       RAM       |   Stock    |\n"
+                       "*---------------------------------------------------------------------------------------------*\n");
+                while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
+                {
+                    if (pcIngresado.identificador != 0)
+                        printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.procesador, pcIngresado.ram, pcIngresado.stock);
+                }
+                printf("*---------------------------------------------------------------------------------------------*\n");
+                printf("Ingrese el ID del PC que desea revisar: ");
+                scanf("%d", &ID);
+                fflush(stdin);
+                fseek(pcs, 0, SEEK_SET);
+                while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
+                {
+                    if (ID == pcIngresado.identificador)
+                    {
+                        system("cls");
+                        imprimirUsuario();
+                        printf("\n"
+                               "*---------------------------------------------------------------------------------------------*\n"
+                               "|                                       PC SELECCIONADO                                       |\n"
+                               "|---------------------------------------------------------------------------------------------|\n"
+                               "|   ID   |      Marca      |      Modelo     |    Procesador   |       RAM       |   Stock    |\n"
+                               "|---------------------------------------------------------------------------------------------|\n");
+                        printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.procesador, pcIngresado.ram, pcIngresado.stock);
+                        printf("*---------------------------------------------------------------------------------------------*\n");
+
+                        printf("\n"
+                               "*-------------------------------------------------------*\n"
+                               "|                  PERIFERICOS DEL PC                   |\n"
+                               "|-------------------------------------------------------|\n"
+                               "|   Tipo   |   ID   |      Marca      |      Modelo     |\n"
+                               "|-------------------------------------------------------|\n");
+                        printf("| Teclado  | %-6d | %-15s | %-15s |\n", pcIngresado.tecladoPC.identificador, pcIngresado.tecladoPC.marca, pcIngresado.tecladoPC.modelo);
+                        printf("|-------------------------------------------------------|\n");
+                        printf("| Mouse    | %-6d | %-15s | %-15s |\n", pcIngresado.mousePC.identificador, pcIngresado.mousePC.marca, pcIngresado.mousePC.modelo);
+                        printf("|-------------------------------------------------------|\n");
+                        printf("| Monitor  | %-6d | %-15s | %-15s |\n", pcIngresado.monitorPC.identificador, pcIngresado.monitorPC.marca, pcIngresado.monitorPC.modelo);
+                        printf("*-------------------------------------------------------*\n");
+                        encontrado = 1;
+                        printf("Presione cualquier tecla para continuar...");
+                        getch();
+                    }
+                }
+                if (encontrado == 0)
                 {
                     system("cls");
                     imprimirUsuario();
-                    printf("\n --------------------------------------- PC seleccionado -------------------------------------\n"
-                           "| - ID - |    - Marca -    |    - Modelo -   |  - Procesador - |     - RAM -     | - Stock -  |\n");
-                    printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.procesador, pcIngresado.ram, pcIngresado.stock);
-
-                    printf(" ---------------------------------------------------------------------------------------------");
-                    printf("\n ------------------- Teclado ----------------\n"
-                           "| - ID - |    - Marca -    |    - Modelo -   |\n");
-                    printf("| %-6d | %-15s | %-15s |\n", pcIngresado.tecladoPC.identificador, pcIngresado.tecladoPC.marca, pcIngresado.tecladoPC.modelo);
-                    printf(" --------------------------------------------");
-                    printf("\n -------------------- Mouse -----------------\n"
-                           "| - ID - |    - Marca -    |    - Modelo -   |\n");
-                    printf("| %-6d | %-15s | %-15s |\n", pcIngresado.mousePC.identificador, pcIngresado.mousePC.marca, pcIngresado.mousePC.modelo);
-                    printf(" --------------------------------------------");
-                    printf("\n --------------------------- Monitor -----------------------\n"
-                           "| - ID - |    - Marca -    |    - Modelo -   | - Pantalla - |\n");
-                    printf("| %-6d | %-15s | %-15s | %+11s\" |\n", pcIngresado.monitorPC.identificador, pcIngresado.monitorPC.marca, pcIngresado.monitorPC.modelo, pcIngresado.monitorPC.tamano);
-                    printf(" -----------------------------------------------------------\n");
+                    printf("\n"
+                           "*--------------------------------------*\n"
+                           "|                 ERROR                |\n"
+                           "*--------------------------------------*\n"
+                           "|       EL ID INGRESADO NO EXISTE      |\n"
+                           "*--------------------------------------*\n");
+                    printf("Presione cualquier tecla para continuar...");
+                    getch();
+                    system("cls");
                 }
-            }
+            } while (encontrado == 0);
         }
     }
     fclose(pcs);
@@ -1394,14 +1673,18 @@ void listarSoloPC()
         printf("\nSin existencias.\n");
     else
     {
-        printf("\n --------------------------------------------- PCs -------------------------------------------\n"
-               "| - ID - |    - Marca -    |    - Modelo -   |  - Procesador - |     - RAM -     | - Stock -  |\n");
+        printf("\n"
+               "*---------------------------------------------------------------------------------------------*\n"
+               "|                                      PC's DE ESCRITORIO                                     |\n"
+               "|---------------------------------------------------------------------------------------------|\n"
+               "|   ID   |      Marca      |      Modelo     |    Procesador   |       RAM       |   Stock    |\n"
+               "*---------------------------------------------------------------------------------------------*\n");
         while (fread(&pcIngresado, sizeof(struct PC), 1, pcs))
         {
             if (pcIngresado.identificador != 0)
                 printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.procesador, pcIngresado.ram, pcIngresado.stock);
         }
-        printf(" ---------------------------------------------------------------------------------------------\n");
+        printf("*---------------------------------------------------------------------------------------------*\n");
     }
     fclose(pcs);
 }
@@ -1431,21 +1714,36 @@ void actualizarTeclado()
                 fseek(teclados, -sizeof(struct teclado), SEEK_CUR);
                 system("cls");
                 imprimirUsuario();
-                printf("\n --------------------------- Actualizar teclado -----------------------");
-                printf("\n -------------------------- Teclado seleccionado ----------------------\n"
-                       "| - ID - |    - Marca -    |   - Modelo -    | - Idioma - | - Stock -  |\n");
+                printf("\n"
+                       "*----------------------------------------------------------------------*\n"
+                       "|                          TECLADO SELECCIONADO                        |\n"
+                       "|----------------------------------------------------------------------|\n"
+                       "|   ID   |      Marca      |      Modelo     |   Idioma   |   Stock    |\n"
+                       "|----------------------------------------------------------------------|\n");
                 printf("| %-6d | %-15s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
-                printf(" ----------------------------------------------------------------------\n");
-                printf("Ingrese la marca del teclado: ");
+                printf("*----------------------------------------------------------------------*\n");
+                printf("*----------------------------------------------------------------------*\n"
+                       "|                     Ingrese la marca del teclado                     |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Marca: ");
                 gets(tecladoIngresado.marca);
                 fflush(stdin);
-                printf("Ingrese el modelo del teclado: ");
+                printf("*----------------------------------------------------------------------*\n"
+                       "|                     Ingrese el modelo del teclado                    |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Modelo: ");
                 gets(tecladoIngresado.modelo);
                 fflush(stdin);
-                printf("Ingrese el idioma del teclado: ");
+                printf("*----------------------------------------------------------------------*\n"
+                       "|                     Ingrese el idioma del teclado                    |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Idioma: ");
                 gets(tecladoIngresado.idioma);
                 fflush(stdin);
-                printf("Ingrese la(s) unidad(es) del producto: ");
+                printf("*----------------------------------------------------------------------*\n"
+                       "|                     Ingrese el stock del teclado                     |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Stock: ");
                 scanf("%d", &tecladoIngresado.stock);
                 fflush(stdin);
                 fwrite(&tecladoIngresado, sizeof(struct teclado), 1, teclados);
@@ -1455,21 +1753,24 @@ void actualizarTeclado()
         }
         if (encontrado == 1)
         {
-            printf("\nEl teclado se actualizo correctamente.\n");
+            system("cls");
+            printf("\n"
+                   "*----------------------------------------------------------------------*\n"
+                   "|                  TECLADO ACTUALIZADO EXITOSAMENTE                    |\n"
+                   "*----------------------------------------------------------------------*\n");
             do
             {
-                printf("Actualizar otro teclado...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                imprimirUsuario();
+                printf("\n"
+                       "*----------------------------------------------------------------------*\n"
+                       "| 1. Actualizar otro teclado                                           |\n"
+                       "| 2. Volver al menu principal                                          |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
-                {
-                    system("cls");
-                    imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
-                }
+                    mensajeError();
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
             {
@@ -1480,20 +1781,26 @@ void actualizarTeclado()
         }
         if (encontrado == 0)
         {
-            printf("\nEl ID ingresado no existe.\n");
+            system("cls");
+            imprimirUsuario();
+            printf("\n"
+                   "*----------------------------------------------------------------------*\n"
+                   "|                      TECLADO NO ENCONTRADO                           |\n"
+                   "*----------------------------------------------------------------------*\n");
             do
             {
-                printf("Reintentar...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                printf("\n"
+                       "*----------------------------------------------------------------------*\n"
+                       "| 1. Ingresar otro ID                                                  |\n"
+                       "| 2. Volver al menu principal                                          |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
                 {
-                    system("cls");
+                    mensajeError();
                     imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
                 }
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
@@ -1531,18 +1838,29 @@ void actualizarMouse()
                 fseek(mouses, -sizeof(struct mouse), SEEK_CUR);
                 system("cls");
                 imprimirUsuario();
-                printf("\n -------------------- Actualizar mouse -------------------");
-                printf("\n ------------------- Mouse seleccionado ------------------\n"
-                       "| - ID - |    - Marca -    |    - Modelo -   | - Stock -  |\n");
+                printf("\n"
+                       "*---------------------------------------------------------*\n"
+                       "|                    MOUSE SELECCIONADO                   |\n"
+                       "|---------------------------------------------------------|\n"
+                       "|   ID   |      Marca      |      Modelo     |   Stock    |\n");
                 printf("| %-6d | %-15s | %-15s | %-10d |\n", mouseIngresado.identificador, mouseIngresado.marca, mouseIngresado.modelo, mouseIngresado.stock);
-                printf(" ---------------------------------------------------------\n");
-                printf("Ingrese marca del mouse: ");
+                printf("*---------------------------------------------------------*\n");
+                printf("*----------------------------------------------------------------------*\n"
+                       "|                     Ingrese la marca del mouse                       |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Marca: ");
                 gets(mouseIngresado.marca);
                 fflush(stdin);
-                printf("Ingrese modelo del mouse: ");
+                printf("*----------------------------------------------------------------------*\n"
+                       "|                     Ingrese el modelo del mouse                      |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Modelo: ");
                 gets(mouseIngresado.modelo);
                 fflush(stdin);
-                printf("Ingrese unidades del producto: ");
+                printf("*----------------------------------------------------------------------*\n"
+                       "|                     Ingrese el stock del mouse                       |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Stock: ");
                 scanf("%d", &mouseIngresado.stock);
                 fflush(stdin);
                 fwrite(&mouseIngresado, sizeof(struct mouse), 1, mouses);
@@ -1552,21 +1870,24 @@ void actualizarMouse()
         }
         if (encontrado == 1)
         {
-            printf("\nEl mouse se actualizo correctamente.\n");
+            system("cls");
+            printf("\n"
+                   "*----------------------------------------------------------------------*\n"
+                   "|                    MOUSE ACTUALIZADO EXITOSAMENTE                    |\n"
+                   "*----------------------------------------------------------------------*\n");
             do
             {
-                printf("Actualizar otro mouse...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                imprimirUsuario();
+                printf("\n"
+                       "*----------------------------------------------------------------------*\n"
+                       "| 1. Actualizar otro mouse                                             |\n"
+                       "| 2. Volver al menu principal                                          |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
-                {
-                    system("cls");
-                    imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
-                }
+                    mensajeError();
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
             {
@@ -1577,20 +1898,26 @@ void actualizarMouse()
         }
         if (encontrado == 0)
         {
-            printf("\nEl ID ingresado no existe.\n");
+            system("cls");
+            imprimirUsuario();
+            printf("\n"
+                   "*----------------------------------------------------------------------*\n"
+                   "|                      MOUSE NO ENCONTRADO                             |\n"
+                   "*----------------------------------------------------------------------*\n");
             do
             {
-                printf("Reintentar...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                printf("\n"
+                       "*----------------------------------------------------------------------*\n"
+                       "| 1. Ingresar otro ID                                                  |\n"
+                       "| 2. Volver al menu principal                                          |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
                 {
-                    system("cls");
+                    mensajeError();
                     imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
                 }
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
@@ -1628,21 +1955,36 @@ void actualizarMonitor()
                 fseek(monitores, -sizeof(struct monitor), SEEK_CUR);
                 system("cls");
                 imprimirUsuario();
-                printf("\n --------------------------- Actualizar monitor -------------------------");
-                printf("\n -------------------------- Monitor seleccionado ------------------------\n"
-                       "| - ID - |    - Marca -    |    - Modelo -   | - Pantalla - | - Stock -  |\n");
+                printf("\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "|                         MONITOR SELECCIONADO                            |\n"
+                       "|-------------------------------------------------------------------------|\n"
+                       "|   ID   |      Marca      |      Modelo     |   Pantalla   |   Stock     |\n"
+                       "|-------------------------------------------------------------------------|\n");
                 printf("| %-6d | %-15s | %-15s | % +11s\" | %-10d |\n", monitorIngresado.identificador, monitorIngresado.marca, monitorIngresado.modelo, monitorIngresado.tamano, monitorIngresado.stock);
-                printf(" ------------------------------------------------------------------------\n");
-                printf("Ingrese marca del monitor: ");
+                printf("*-------------------------------------------------------------------------*\n");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese la marca del monitor                        |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Marca: ");
                 gets(monitorIngresado.marca);
                 fflush(stdin);
-                printf("Ingrese modelo del monitor: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el modelo del monitor                       |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Modelo: ");
                 gets(monitorIngresado.modelo);
                 fflush(stdin);
-                printf("Ingrese tamano de pantalla: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el tamano del monitor                       |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Tamano: ");
                 gets(monitorIngresado.tamano);
                 fflush(stdin);
-                printf("Ingrese unidades del producto: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el stock del monitor                        |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Stock: ");
                 scanf("%d", &monitorIngresado.stock);
                 fflush(stdin);
                 fwrite(&monitorIngresado, sizeof(struct monitor), 1, monitores);
@@ -1652,21 +1994,24 @@ void actualizarMonitor()
         }
         if (encontrado == 1)
         {
-            printf("\nEl monitor se actualizo correctamente.\n");
+            system("cls");
+            printf("\n"
+                   "*----------------------------------------------------------------------*\n"
+                   "|                    MONITOR ACTUALIZADO EXITOSAMENTE                  |\n"
+                   "*----------------------------------------------------------------------*\n");
             do
             {
-                printf("Actualizar otro monitor...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                imprimirUsuario();
+                printf("\n"
+                       "*----------------------------------------------------------------------*\n"
+                       "| 1. Actualizar otro monitor                                           |\n"
+                       "| 2. Volver al menu principal                                          |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
-                {
-                    system("cls");
-                    imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
-                }
+                    mensajeError();
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
             {
@@ -1677,20 +2022,26 @@ void actualizarMonitor()
         }
         if (encontrado == 0)
         {
-            printf("\nEl ID ingresado no existe.\n");
+            system("cls");
+            imprimirUsuario();
+            printf("\n"
+                   "*----------------------------------------------------------------------*\n"
+                   "|                      MONITOR NO ENCONTRADO                           |\n"
+                   "*----------------------------------------------------------------------*\n");
             do
             {
-                printf("Reintentar...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                printf("\n"
+                       "*----------------------------------------------------------------------*\n"
+                       "| 1. Ingresar otro ID                                                  |\n"
+                       "| 2. Volver al menu principal                                          |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
                 {
-                    system("cls");
+                    mensajeError();
                     imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
                 }
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
@@ -1714,7 +2065,7 @@ void actualizarNotebook()
     else
     {
         listarNotebook();
-        printf("Seleccione el ID de la notebook que desea actualizar: ");
+        printf("Seleccione el ID del notebook que desea actualizar: ");
         scanf("%d", &ID);
         fflush(stdin);
 
@@ -1728,27 +2079,49 @@ void actualizarNotebook()
                 fseek(notebooks, -sizeof(struct notebook), SEEK_CUR);
                 system("cls");
                 imprimirUsuario();
-                printf("\n --------------------------------------------- Actualizar notebook ------------------------------------------");
-                printf("\n -------------------------------------------- Notebook seleccionado -----------------------------------------\n"
-                       "| - ID - |    - Marca -    |    - Modelo -   |  - Procesador - |     - RAM -     | - Pantalla - | - Stock -  |\n");
+                printf("\n"
+                       "*------------------------------------------------------------------------------------------------------------*\n"
+                       "|                                            NOTEBOOK SELECCIONADO                                           |\n"
+                       "|------------------------------------------------------------------------------------------------------------|\n"
+                       "|   ID   |      Marca      |      Modelo     |    Procesador   |       RAM       |   Pantalla   |   Stock    |\n"
+                       "|------------------------------------------------------------------------------------------------------------|\n");
                 printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %+11s\" | %-10d |\n", notebookIngresado.identificador, notebookIngresado.marca, notebookIngresado.modelo, notebookIngresado.procesador, notebookIngresado.ram, notebookIngresado.pantalla, notebookIngresado.stock);
-                printf(" ------------------------------------------------------------------------------------------------------------\n");
-                printf("Ingrese la marca del notebook: ");
+                printf("*------------------------------------------------------------------------------------------------------------*\n");
+                printf("\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese la marca del notebook                       |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Marca: ");
                 gets(notebookIngresado.marca);
                 fflush(stdin);
-                printf("Ingrese el modelo del notebook: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el modelo del notebook                      |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Modelo: ");
                 gets(notebookIngresado.modelo);
                 fflush(stdin);
-                printf("Ingrese el procesador del notebook: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el procesador del notebook                  |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Procesador: ");
                 gets(notebookIngresado.procesador);
                 fflush(stdin);
-                printf("Ingrese la RAM del notebook: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese la RAM del notebook                         |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " RAM: ");
                 gets(notebookIngresado.ram);
                 fflush(stdin);
-                printf("Ingrese el tamano de pantalla: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese la pantalla del notebook                    |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Pantalla: ");
                 gets(notebookIngresado.pantalla);
                 fflush(stdin);
-                printf("Ingrese la(s) unidad(es) del producto: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el stock del notebook                       |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Stock: ");
                 scanf("%d", &notebookIngresado.stock);
                 fflush(stdin);
                 fwrite(&notebookIngresado, sizeof(struct notebook), 1, notebooks);
@@ -1758,21 +2131,24 @@ void actualizarNotebook()
         }
         if (encontrado == 1)
         {
-            printf("\nLa notebook se actualizo correctamente.\n");
+            system("cls");
+            printf("\n"
+                   "*----------------------------------------------------------------------*\n"
+                   "|                      NOTEBOOK ACTUALIZADO                            |\n"
+                   "*----------------------------------------------------------------------*\n");
             do
             {
-                printf("Actualizar otra notebook...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                imprimirUsuario();
+                printf("\n"
+                       "*----------------------------------------------------------------------*\n"
+                       "| 1. Actualizar otro notebook                                          |\n"
+                       "| 2. Volver al menu principal                                          |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
-                {
-                    system("cls");
-                    imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
-                }
+                    mensajeError();
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
             {
@@ -1783,20 +2159,26 @@ void actualizarNotebook()
         }
         if (encontrado == 0)
         {
-            printf("\nEl ID ingresado no existe.\n");
+            system("cls");
+            imprimirUsuario();
+            printf("\n"
+                   "*----------------------------------------------------------------------*\n"
+                   "|                      NOTEBOOK NO ENCONTRADO                          |\n"
+                   "*----------------------------------------------------------------------*\n");
             do
             {
-                printf("Reintentar...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                printf("\n"
+                       "*----------------------------------------------------------------------*\n"
+                       "| 1. Ingresar otro ID                                                  |\n"
+                       "| 2. Volver al menu principal                                          |\n"
+                       "*----------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
                 {
-                    system("cls");
+                    mensajeError();
                     imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
                 }
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
@@ -1834,52 +2216,109 @@ void actualizarPC()
                 fseek(pcs, -sizeof(struct PC), SEEK_CUR);
                 system("cls");
                 imprimirUsuario();
-                printf("\n ----------------------------------------- Actualizar PC -------------------------------------");
-                printf("\n ---------------------------------------- PC seleccionada ------------------------------------\n"
-                       "| - ID - |    - Marca -    |    - Modelo -   |  - Procesador - |     - RAM -     | - Stock -  |\n");
+                printf("\n"
+                       "*---------------------------------------------------------------------------------------------*\n"
+                       "|                                      PC SELECCIONADA                                        |\n"
+                       "*---------------------------------------------------------------------------------------------*\n"
+                       "|   ID   |      Marca      |      Modelo     |    Procesador   |       RAM       |   Stock    |\n"
+                       "*---------------------------------------------------------------------------------------------*\n");
                 printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %-10d |\n", pcIngresado.identificador, pcIngresado.marca, pcIngresado.modelo, pcIngresado.procesador, pcIngresado.ram, pcIngresado.stock);
-                printf(" ---------------------------------------------------------------------------------------------\n");
-                printf("Ingrese la marca de la PC: ");
+                printf("*---------------------------------------------------------------------------------------------*\n");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese la marca de la PC                           |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Marca: ");
                 fflush(stdin);
                 gets(pcIngresado.marca);
                 fflush(stdin);
-                printf("Ingrese el modelo de la PC: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el modelo de la PC                          |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Modelo: ");
                 gets(pcIngresado.modelo);
                 fflush(stdin);
-                printf("Ingrese el procesador de la PC: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el procesador de la PC                      |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Procesador: ");
                 gets(pcIngresado.procesador);
                 fflush(stdin);
-                printf("Ingrese la RAM de la PC: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese la RAM de la PC                             |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " RAM: ");
                 gets(pcIngresado.ram);
                 fflush(stdin);
-                printf("Ingrese el stock de la PC: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el stock de la PC                           |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Stock: ");
                 scanf("%d", &pcIngresado.stock);
                 fflush(stdin);
-                printf("\n--------------------- Actualizar Teclado PC ----------------------\n");
-                printf("Ingrese la marca del teclado: ");
+                system("cls");
+
+                imprimirUsuario();
+                printf("\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "|                         ACTUALIZAR TECLADO PC                           |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese la marca del teclado                        |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Marca: ");
                 gets(pcIngresado.tecladoPC.marca);
                 fflush(stdin);
-                printf("Ingrese el modelo del teclado: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el modelo del teclado                       |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Modelo: ");
                 gets(pcIngresado.tecladoPC.modelo);
                 fflush(stdin);
-                printf("Ingrese el idioma del teclado: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el idioma del teclado                       |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Idioma: ");
                 gets(pcIngresado.tecladoPC.idioma);
                 fflush(stdin);
-                printf("\n--------------------- Agregar Mouse PC ----------------------\n");
-                printf("Ingrese la marca del mouse: ");
+                system("cls");
+
+                imprimirUsuario();
+                printf("\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "|                         ACTUALIZAR MOUSE PC                             |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese la marca del mouse                          |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Marca: ");
                 gets(pcIngresado.mousePC.marca);
                 fflush(stdin);
-                printf("Ingrese el modelo del mouse: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el modelo del mouse                         |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Modelo: ");
                 gets(pcIngresado.mousePC.modelo);
                 fflush(stdin);
-                printf("\n--------------------- Agregar Monitor PC ----------------------\n");
-                printf("Ingrese la marca del monitor: ");
+                system("cls");
+
+                imprimirUsuario();
+                printf("\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "|                         ACTUALIZAR MONITOR PC                           |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese la marca del monitor                        |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Marca: ");
                 gets(pcIngresado.monitorPC.marca);
                 fflush(stdin);
-                printf("Ingrese el modelo del monitor: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el modelo del monitor                       |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Modelo: ");
                 gets(pcIngresado.monitorPC.modelo);
                 fflush(stdin);
-                printf("Ingrese el tamano del monitor: ");
+                printf("*-------------------------------------------------------------------------*\n"
+                       "|                     Ingrese el tamano del monitor                       |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Tamano: ");
                 gets(pcIngresado.monitorPC.tamano);
                 fflush(stdin);
 
@@ -1890,21 +2329,24 @@ void actualizarPC()
         }
         if (encontrado == 1)
         {
-            printf("\nEl PC se actualizo correctamente.\n");
+            system("cls");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         PC ACTUALIZADA EXITOSAMENTE                     |\n"
+                   "*-------------------------------------------------------------------------*\n");
             do
             {
-                printf("Actualizar otro PC...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                imprimirUsuario();
+                printf("\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "| 1. Actualizar otra PC                                                   |\n"
+                       "| 2. Volver al menu principal                                             |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
-                {
-                    system("cls");
-                    imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
-                }
+                    mensajeError();
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
             {
@@ -1915,20 +2357,26 @@ void actualizarPC()
         }
         if (encontrado == 0)
         {
-            printf("\nEl ID ingresado no existe.\n");
+            system("cls");
+            imprimirUsuario();
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         PC NO ENCONTRADA                                |\n"
+                   "*-------------------------------------------------------------------------*\n");
             do
             {
-                printf("Reintentar...\n"
-                       "1. Si\n"
-                       "2. No\n"
-                       "Seleccione una opcion: ");
+                printf("\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       "| 1. Ingresar otro ID                                                     |\n"
+                       "| 2. Volver al menu principal                                             |\n"
+                       "*-------------------------------------------------------------------------*\n"
+                       " Seleccione una opcion: ");
                 scanf("%d", &opcion);
                 fflush(stdin);
                 if (opcion < 1 || opcion > 2)
                 {
-                    system("cls");
+                    mensajeError();
                     imprimirUsuario();
-                    printf("\nLa opcion seleccionada no es valida.\n");
                 }
             } while (opcion < 1 || opcion > 2);
             if (opcion == 1)
@@ -1969,21 +2417,24 @@ void eliminarTeclado()
                 do
                 {
                     imprimirUsuario();
-                    printf("\n ------------------------- Teclado seleccionado -----------------------\n"
-                           "| - ID - |    - Marca -    |    - Modelo -   | - Idioma - | - Stock -  |\n");
+                    printf("\n"
+                           "*----------------------------------------------------------------------*\n"
+                           "|                          TECLADO SELECCIONADO                        |\n"
+                           "|----------------------------------------------------------------------|\n"
+                           "|   ID   |      Marca      |      Modelo     |   Idioma   |   Stock    |\n"
+                           "*----------------------------------------------------------------------*\n");
                     printf("| %-6d | %-15s | %-15s | %-10s | %-10d |\n", tecladoIngresado.identificador, tecladoIngresado.marca, tecladoIngresado.modelo, tecladoIngresado.idioma, tecladoIngresado.stock);
-                    printf(" ----------------------------------------------------------------------\n");
-                    printf("Esta seguro que desea eliminar el teclado seleccionado?\n"
-                           "1. Si\n"
-                           "2. No\n"
-                           "Seleccione una opcion: ");
+                    printf("*----------------------------------------------------------------------*\n");
+                    printf("Confirme la eliminacion del teclado seleccionado.\n"
+                           "*----------------------------------------------------------------------*\n"
+                           "| 1. Eliminar teclado                                                  |\n"
+                           "| 2. Cancelar borrado                                                  |\n"
+                           "*----------------------------------------------------------------------*\n"
+                           " Seleccione una opcion: ");
                     scanf("%d", &opcion);
                     fflush(stdin);
                     if (opcion < 1 || opcion > 2)
-                    {
-                        system("cls");
-                        printf("La opcion seleccionada no es valida.\n");
-                    }
+                        mensajeError();
                 } while (opcion < 1 || opcion > 2);
                 if (opcion == 1)
                 {
@@ -2006,19 +2457,28 @@ void eliminarTeclado()
         switch (encontrado)
         {
         case 0:
-            printf("\nEl ID ingresado no existe.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         TECLADO NO ENCONTRADO                           |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 1:
-            printf("\nEl teclado ha sido eliminado exitosamente.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         TECLADO ELIMINADO                               |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 2:
-            printf("\nLa operacion fue cancelada.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         OPERACION CANCELADA                             |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
@@ -2054,21 +2514,24 @@ void eliminarMouse()
                 do
                 {
                     imprimirUsuario();
-                    printf("\n ------------------- Mouse seleccionado -----------------\n"
-                           "| - ID - |    - Marca -    |    - Modelo -   | - Stock -  |\n");
+                    printf("\n"
+                           "*---------------------------------------------------------*\n"
+                           "|                     MOUSE SELECCIONADO                  |\n"
+                           "|---------------------------------------------------------|\n"
+                           "|   ID   |      Marca      |      Modelo     |   Stock    |\n"
+                           "*---------------------------------------------------------*\n");
                     printf("| %-6d | %-15s | %-15s | %-10d |\n", mouseIngresado.identificador, mouseIngresado.marca, mouseIngresado.modelo, mouseIngresado.stock);
-                    printf(" --------------------------------------------------------\n");
-                    printf("Esta seguro que desea eliminar el mouse seleccionado?\n"
-                           "1. Si\n"
-                           "2. No\n"
-                           "Seleccione una opcion: ");
+                    printf("*---------------------------------------------------------*\n");
+                    printf("Confirme la eliminacion del mouse seleccionado.\n"
+                           "*---------------------------------------------------------*\n"
+                           "| 1. Eliminar mouse                                       |\n"
+                           "| 2. Cancelar borrado                                     |\n"
+                           "*---------------------------------------------------------*\n"
+                           " Seleccione una opcion: ");
                     scanf("%d", &opcion);
                     fflush(stdin);
                     if (opcion < 1 || opcion > 2)
-                    {
-                        system("cls");
-                        printf("La opcion seleccionada no es valida.\n");
-                    }
+                        mensajeError();
                 } while (opcion < 1 || opcion > 2);
                 if (opcion == 1)
                 {
@@ -2090,19 +2553,28 @@ void eliminarMouse()
         switch (encontrado)
         {
         case 0:
-            printf("\nEl ID ingresado no existe.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         MOUSE NO ENCONTRADO                             |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 1:
-            printf("\nEl mouse ha sido eliminado exitosamente.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         MOUSE ELIMINADO                                 |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 2:
-            printf("\nLa operacion fue cancelada.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         OPERACION CANCELADA                             |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
@@ -2138,21 +2610,24 @@ void eliminarMonitor()
                 do
                 {
                     imprimirUsuario();
-                    printf("\n -------------------------- Monitor seleccionado ------------------------\n"
-                           "| - ID - |    - Marca -    |    - Modelo -   | - Pantalla - | - Stock -  |\n");
+                    printf("\n"
+                           "*------------------------------------------------------------------------*\n"
+                           "|                     MONITOR SELECCIONADO                               |\n"
+                           "|------------------------------------------------------------------------|\n"
+                           "|   ID   |      Marca      |      Modelo     |   Pantalla   |   Stock    |\n"
+                           "*------------------------------------------------------------------------*\n");
                     printf("| %-6d | %-15s | %-15s | %+11s\" | %-10d |\n", monitorIngresado.identificador, monitorIngresado.marca, monitorIngresado.modelo, monitorIngresado.tamano, monitorIngresado.stock);
-                    printf(" ------------------------------------------------------------------------\n");
-                    printf("Esta seguro que desea eliminar el monitor seleccionado?\n"
-                           "1. Si\n"
-                           "2. No\n"
-                           "Seleccione una opcion: ");
+                    printf("*------------------------------------------------------------------------*\n");
+                    printf("Confirme la eliminacion del monitor seleccionado.\n"
+                           "*------------------------------------------------------------------------*\n"
+                           "| 1. Eliminar monitor                                                    |\n"
+                           "| 2. Cancelar borrado                                                    |\n"
+                           "*------------------------------------------------------------------------*\n"
+                           " Seleccione una opcion: ");
                     scanf("%d", &opcion);
                     fflush(stdin);
                     if (opcion < 1 || opcion > 2)
-                    {
-                        system("cls");
-                        printf("La opcion seleccionada no es valida.\n");
-                    }
+                        mensajeError();
                 } while (opcion < 1 || opcion > 2);
                 if (opcion == 1)
                 {
@@ -2175,19 +2650,28 @@ void eliminarMonitor()
         switch (encontrado)
         {
         case 0:
-            printf("\nEl ID ingresado no existe.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         MONITOR NO ENCONTRADO                           |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 1:
-            printf("\nEl monitor ha sido eliminado exitosamente.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         MONITOR ELIMINADO                               |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 2:
-            printf("\nLa operacion fue cancelada.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         OPERACION CANCELADA                             |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
@@ -2223,21 +2707,24 @@ void eliminarNotebook()
                 do
                 {
                     imprimirUsuario();
-                    printf("\n ------------------------------------------- Notebook seleccionada ------------------------------------------\n"
-                           "| - ID - |    - Marca -    |    - Modelo -   | - Procesador -  |     - RAM -     | - Pantalla - | - Stock -  |\n");
+                    printf("\n"
+                           "*------------------------------------------------------------------------------------------------------------*\n"
+                           "|                                           NOTEBOOK SELECCIONADO                                            |\n"
+                           "|------------------------------------------------------------------------------------------------------------|\n"
+                           "|   ID   |      Marca      |      Modelo     |   Procesador    |       RAM       |   Pantalla   |   Stock    |\n"
+                           "*------------------------------------------------------------------------------------------------------------*\n");
                     printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %+11s\" | %-10d |\n", notebookIngresada.identificador, notebookIngresada.marca, notebookIngresada.modelo, notebookIngresada.procesador, notebookIngresada.ram, notebookIngresada.pantalla, notebookIngresada.stock);
-                    printf(" ------------------------------------------------------------------------------------------------------------\n");
-                    printf("Esta seguro que desea eliminar el notebook seleccionado?\n"
-                           "1. Si\n"
-                           "2. No\n"
-                           "Seleccione una opcion: ");
+                    printf("*------------------------------------------------------------------------------------------------------------*\n");
+                    printf("Confirme la eliminacion del notebook seleccionado.\n"
+                           "*------------------------------------------------------------------------------------------------------------*\n"
+                           "| 1. Eliminar notebook                                                                                       |\n"
+                           "| 2. Cancelar borrado                                                                                        |\n"
+                           "*------------------------------------------------------------------------------------------------------------*\n"
+                           " Seleccione una opcion: ");
                     scanf("%d", &opcion);
                     fflush(stdin);
                     if (opcion < 1 || opcion > 2)
-                    {
-                        system("cls");
-                        printf("La opcion seleccionada no es valida.\n");
-                    }
+                        mensajeError();
                 } while (opcion < 1 || opcion > 2);
                 if (opcion == 1)
                 {
@@ -2263,20 +2750,29 @@ void eliminarNotebook()
         switch (encontrado)
         {
         case 0:
-            printf("\nEl ID ingresado no existe.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         NOTEBOOK NO ENCONTRADO                          |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 1:
-            printf("\nEl notebook ha sido eliminado exitosamente.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         NOTEBOOK ELIMINADO                              |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 2:
 
-            printf("\nLa operacion fue cancelada.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         OPERACION CANCELADA                             |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
@@ -2312,21 +2808,24 @@ void eliminarPC()
                 do
                 {
                     imprimirUsuario();
-                    printf("\n ------------------------------------------- PC seleccionada ------------------------------------------\n"
-                           "| - ID - |    - Marca -    |    - Modelo -   | - Procesador -  |     - RAM -     | - Stock -  |\n");
+                    printf("\n"
+                           "*---------------------------------------------------------------------------------------------*\n"
+                           "|                                         PC SELECCIONADO                                     |\n"
+                           "|---------------------------------------------------------------------------------------------|\n"
+                           "|   ID   |      Marca      |      Modelo     |   Procesador    |       RAM       |   Stock    |\n"
+                           "*---------------------------------------------------------------------------------------------*\n");
                     printf("| %-6d | %-15s | %-15s | %-15s | %-15s | %-10d |\n", pcIngresada.identificador, pcIngresada.marca, pcIngresada.modelo, pcIngresada.procesador, pcIngresada.ram, pcIngresada.stock);
-                    printf(" ------------------------------------------------------------------------------------------------------\n");
-                    printf("Esta seguro que desea eliminar la PC seleccionada?\n"
-                           "1. Si\n"
-                           "2. No\n"
-                           "Seleccione una opcion: ");
+                    printf("*---------------------------------------------------------------------------------------------*\n");
+                    printf("Confirme la eliminacion del PC seleccionado.\n"
+                           "*---------------------------------------------------------------------------------------------*\n"
+                           "| 1. Eliminar PC                                                                               |\n"
+                           "| 2. Cancelar borrado                                                                          |\n"
+                           "*---------------------------------------------------------------------------------------------*\n"
+                           " Seleccione una opcion: ");
                     scanf("%d", &opcion);
                     fflush(stdin);
                     if (opcion < 1 || opcion > 2)
-                    {
-                        system("cls");
-                        printf("La opcion seleccionada no es valida.\n");
-                    }
+                        mensajeError();
                 } while (opcion < 1 || opcion > 2);
                 if (opcion == 1)
                 {
@@ -2352,19 +2851,28 @@ void eliminarPC()
         switch (encontrado)
         {
         case 0:
-            printf("\nEl ID ingresado no existe.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         PC NO ENCONTRADO                                |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 1:
-            printf("\nEl PC ha sido eliminado exitosamente.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         PC ELIMINADO                                    |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
             break;
         case 2:
-            printf("\nLa operacion fue cancelada.\n");
+            printf("\n"
+                   "*-------------------------------------------------------------------------*\n"
+                   "|                         OPERACION CANCELADA                             |\n"
+                   "*-------------------------------------------------------------------------*\n");
             printf("Presione cualquier tecla para volver al menu...");
             getch();
             system("cls");
