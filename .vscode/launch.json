@@ -8,8 +8,13 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
+<<<<<<< HEAD
+      "cwd": "c:/Users/calar/Desktop/Códigos GitHub",
+      "program": "c:/Users/calar/Desktop/Códigos GitHub/build/Debug/outDebug",
+=======
       "cwd": "c:/Users/calar/Desktop/Sistema-de-inventario",
       "program": "c:/Users/calar/Desktop/Sistema-de-inventario/build/Debug/outDebug",
+>>>>>>> 8dec1137c37519eda1d2a58c4d30dc8380335d6a
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
